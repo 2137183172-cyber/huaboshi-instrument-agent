@@ -1,0 +1,104 @@
+{
+  "metadata": {
+    "synthetic": true,
+    "authoritative_reviewed": false
+  },
+  "products": [
+    {
+      "record_id": "demo-1",
+      "product_id": "demo-1",
+      "product_name": "演示离心设备",
+      "display_name": "演示离心设备",
+      "product_code": "DEMO-001",
+      "product_aliases": [
+        "演示离心设备"
+      ],
+      "category": "样本前处理",
+      "capabilities": [
+        "离心",
+        "样本分离"
+      ],
+      "tasks": [
+        "离心",
+        "样本分离"
+      ],
+      "one_sentence_summary": "虚构教学设备，不代表真实商品或性能。",
+      "sample_types": [
+        "教学样本"
+      ],
+      "key_specs": [],
+      "review_status": "synthetic",
+      "source_files": [
+        "synthetic-example"
+      ],
+      "source_pages": [],
+      "evidence_chunks": [
+        "此条为项目自建的虚构演示资料，不是厂商证据。"
+      ]
+    },
+    {
+      "record_id": "demo-2",
+      "product_id": "demo-2",
+      "product_name": "演示移液工作站",
+      "display_name": "演示移液工作站",
+      "product_code": "DEMO-002",
+      "product_aliases": [
+        "演示移液工作站"
+      ],
+      "category": "液体处理",
+      "capabilities": [
+        "移液",
+        "分液"
+      ],
+      "tasks": [
+        "移液",
+        "分液"
+      ],
+      "one_sentence_summary": "虚构教学设备，不代表真实商品或性能。",
+      "sample_types": [
+        "教学样本"
+      ],
+      "key_specs": [],
+      "review_status": "synthetic",
+      "source_files": [
+        "synthetic-example"
+      ],
+      "source_pages": [],
+      "evidence_chunks": [
+        "此条为项目自建的虚构演示资料，不是厂商证据。"
+      ]
+    },
+    {
+      "record_id": "demo-3",
+      "product_id": "demo-3",
+      "product_name": "演示细胞成像设备",
+      "display_name": "演示细胞成像设备",
+      "product_code": "DEMO-003",
+      "product_aliases": [
+        "演示细胞成像设备"
+      ],
+      "category": "细胞成像",
+      "capabilities": [
+        "成像",
+        "细胞观察"
+      ],
+      "tasks": [
+        "成像",
+        "细胞观察"
+      ],
+      "one_sentence_summary": "虚构教学设备，不代表真实商品或性能。",
+      "sample_types": [
+        "教学样本"
+      ],
+      "key_specs": [],
+      "review_status": "synthetic",
+      "source_files": [
+        "synthetic-example"
+      ],
+      "source_pages": [],
+      "evidence_chunks": [
+        "此条为项目自建的虚构演示资料，不是厂商证据。"
+      ]
+    }
+  ]
+}

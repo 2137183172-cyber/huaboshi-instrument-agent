@@ -1,0 +1,57 @@
+.hb-answer { min-width: 0; }
+.hb-output-actions .stage-open { font-size: 16px; font-weight: 800; color: #075dba; text-decoration: underline; text-underline-offset: 4px; padding: 9px 0; min-height: 40px; text-align: left; }
+.hb-output-actions .stage-open:hover { color: #034181; }
+.hb-output-actions .stage-open:focus-visible { outline: 2px solid #075dba; outline-offset: 3px; }
+.hb-output-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 8px 0 12px; }
+.hb-export-status { font-size: 13px; color: #59666a; }
+.hb-mindmap { margin: 18px 0; padding: 16px 0; border-top: 1px solid #cedbdc; border-bottom: 1px solid #cedbdc; color: #233438; }
+.hb-mindmap summary { cursor: pointer; font-weight: 600; overflow-wrap: anywhere; }
+.hb-map-tree { padding: 16px 4px; line-height: 1.65; font-size: 14px; }
+.hb-map-root { display: inline-block; color: #116c78; padding: 8px 14px; border: 1px solid #84b6bd; border-radius: 6px; background: #edf7f7; max-width: 100%; overflow-wrap: anywhere; }
+.hb-map-tree ul { list-style: none; margin: 0 0 0 16px; padding: 0 0 0 20px; border-left: 2px solid #a8c7ca; }
+.hb-map-tree li { position: relative; padding: 10px 0; overflow-wrap: anywhere; }
+.hb-map-tree li::before { content: ''; position: absolute; top: 23px; left: -20px; width: 15px; border-top: 2px solid #a8c7ca; }
+.hb-map-tree > ul > li:nth-child(3n+2) > details > summary { color: #825628; }
+.hb-map-tree > ul > li:nth-child(3n) > details > summary { color: #3d7657; }
+@media (max-width: 600px) { .hb-map-tree ul { margin-left: 8px; padding-left: 15px; } .hb-map-tree li::before { left: -15px; width: 11px; } }
+@media (max-width: 720px) {
+  body { font-size: 14px; scrollbar-gutter: auto; }
+  .app.chat-mode { height: 100dvh; min-height: 0; padding: 8px 10px 0; display: flex; flex-direction: column; overflow: hidden; }
+  .chat-mode .topbar { width: 100%; flex: 0 0 auto; }
+  .chat-mode .brand { font-size: 17px; gap: 7px; letter-spacing: 0; }
+  .chat-mode .brand-mark { width: 30px; height: 30px; border-radius: 8px; }
+  .app.chat-mode .chat { display: flex; flex-direction: column; flex: 1; min-height: 0; height: auto; width: 100%; margin: 5px 0 0; padding: 0; }
+  .chat-mode .conversation-context { flex: 0 0 auto; padding: 5px 0 6px; margin: 0; font-size: 12px; }
+  .chat-mode .conversation-context-line { flex-wrap: nowrap; gap: 5px; min-width: 0; width: 100%; }
+  .chat-mode .conversation-context-label { font-size: 11px; white-space: nowrap; }
+  .chat-mode .conversation-context-object { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chat-mode .conversation-context-type { font-size: 11px; white-space: nowrap; }
+  .chat-mode .chat-scroll { flex: 1; min-height: 0; height: auto; padding: 10px 0 12px; }
+  .chat-mode .chat-composer { position: relative; flex: 0 0 auto; left: auto; right: auto; bottom: auto; width: 100%; transform: none; padding: 4px 0 max(6px, env(safe-area-inset-bottom)); }
+  .chat-mode .chat-toolbar { margin-bottom: 4px; }
+  .chat-mode .end-chat-btn { min-height: 30px; font-size: 12px; padding: 4px 10px; box-shadow: none; }
+  .chat-mode .composer { padding: 6px 8px; gap: 8px; border-radius: 10px; }
+  .chat-mode .composer textarea { min-height: 34px; height: 38px; max-height: 80px; font-size: 16px; line-height: 1.35; padding: 6px 0; }
+  .chat-mode .send-btn { width: 36px; height: 36px; }
+  .chat-mode .chat-composer .empty-note { display: none; }
+  .chat-mode .scroll-down { bottom: 102px; width: 32px; height: 32px; z-index: 2; }
+  .chat-mode .message { margin-bottom: 16px; gap: 0; }
+  .chat-mode .assistant > .avatar { display: none; }
+  .chat-mode .assistant > .bubble-wrap { width: 100%; max-width: 100%; min-width: 0; }
+  .chat-mode .meta { font-size: 12px; margin-bottom: 3px; gap: 7px; }
+  .chat-mode .bubble { font-size: 14px; line-height: 1.6; padding: 8px 10px; }
+  .chat-mode .assistant .bubble { padding-left: 0; padding-right: 0; border: 0; background: transparent; }
+  .chat-mode .hb-output-actions { gap: 4px 8px; margin: 3px 0 6px; }
+  .chat-mode .hb-output-actions .stage-open { font-size: 14px; padding: 5px 0; min-height: 34px; }
+  .chat-mode .scenario-plan, .chat-mode .research-path, .chat-mode .equipment-table-section { margin-top: 10px; padding-top: 10px; }
+  .chat-mode .scenario-title, .chat-mode .research-path h3, .chat-mode .equipment-table-title, .chat-mode .device-title { font-size: 16px; line-height: 1.4; }
+  .chat-mode .scenario-step { padding: 7px 0 7px 9px; margin-top: 8px; }
+  .chat-mode .scenario-step h4 { font-size: 14px; margin: 0 0 5px; }
+  .chat-mode .scenario-step p, .chat-mode .scenario-relation, .chat-mode .scenario-meta, .chat-mode .section-text { font-size: 13px; line-height: 1.55; margin-top: 4px; margin-bottom: 4px; }
+  .chat-mode .device-card { padding: 10px; }
+  .chat-mode .equipment-table td { padding-top: 6px; padding-bottom: 6px; font-size: 13px; line-height: 1.5; }
+  .chat-mode .hb-mindmap { margin: 10px 0; padding: 10px 0; }
+  .chat-mode .hb-map-tree { padding: 9px 0; font-size: 13px; line-height: 1.5; }
+  .chat-mode .hb-map-tree li { padding-top: 6px; padding-bottom: 6px; }
+  .chat-mode .hb-map-tree li::before { top: 16px; }
+}

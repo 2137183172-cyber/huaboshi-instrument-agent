@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#08243d" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content="面向生命科学企业的AI增长落地方案。第一阶段聚焦AI销售数字员工与销售增长体系建设。" />
+  <meta property="og:title" content="企业AI增长落地方案" />
+  <meta property="og:description" content="从企业知识沉淀、销售过程管理到老板经营分析。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/demo-lab.svg" />
+  <title>企业AI增长落地方案｜第一阶段：AI销售数字员工</title>
+  <script src="assets/lucide.min.js"></script>
+  <style>
+    :root {
+      --navy-950: #061a2c;
+      --navy-900: #08243d;
+      --navy-800: #0b3553;
+      --navy-700: #114f70;
+      --teal-600: #0da99c;
+      --teal-500: #16c1b2;
+      --teal-100: #dff8f4;
+      --cyan-100: #e6f4f8;
+      --blue-100: #eaf2ff;
+      --amber-500: #f4a51c;
+      --amber-100: #fff3d6;
+      --coral-500: #ef665f;
+      --coral-100: #ffebe8;
+      --green-500: #218a68;
+      --green-100: #e3f5ec;
+      --ink: #10273b;
+      --muted: #5f7180;
+      --line: #d7e1e7;
+      --surface: #ffffff;
+      --surface-alt: #f2f7fa;
+      --shadow: 0 18px 48px rgba(6, 26, 44, 0.13);
+      --radius: 8px;
+      --header-height: 64px;
+      --content: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-height) + 18px);
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background: var(--surface);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+      font-size: 18px;
+      line-height: 1.72;
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body.menu-open,
+    body.dialog-open {
+      overflow: hidden;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    :focus-visible {
+      outline: 3px solid rgba(22, 193, 178, 0.45);
+      outline-offset: 3px;
+    }
+
+    .scroll-progress {
+      position: fixed;
+      inset: 0 auto auto 0;
+      z-index: 100;
+      width: 0;
+      height: 4px;
+      background: var(--teal-500);
+      transition: width 80ms linear;
+    }
+
+    .site-header {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 90;
+      height: var(--header-height);
+      background: rgba(6, 26, 44, 0.96);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      backdrop-filter: blur(14px);
+    }
+
+    .nav-shell {
+      width: min(100% - 32px, var(--content));
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: end;
+      gap: 3px;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark span {
+      display: block;
+      background: var(--teal-500);
+      border-radius: 2px 2px 0 0;
+    }
+
+    .brand-mark span:nth-child(1) { height: 14px; }
+    .brand-mark span:nth-child(2) { height: 25px; }
+    .brand-mark span:nth-child(3) { height: 19px; }
+
+    .brand-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .desktop-nav {
+      display: none;
+      align-items: center;
+      gap: 24px;
+      font-size: 15px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.76);
+    }
+
+    .desktop-nav a {
+      position: relative;
+      padding: 20px 0;
+    }
+
+    .desktop-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 11px;
+      height: 2px;
+      background: var(--teal-500);
+      transform: scaleX(0);
+      transition: transform 180ms ease;
+    }
+
+    .desktop-nav a:hover,
+    .desktop-nav a.active {
+      color: #fff;
+    }
+
+    .desktop-nav a:hover::after,
+    .desktop-nav a.active::after {
+      transform: scaleX(1);
+    }
+
+    .icon-button {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 50%;
+      color: #fff;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .icon-button svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .menu-panel {
+      position: fixed;
+      inset: var(--header-height) 0 0 0;
+      z-index: 85;
+      display: none;
+      background: rgba(6, 26, 44, 0.98);
+      color: #fff;
+    }
+
+    .menu-panel.open {
+      display: block;
+    }
+
+    .menu-links {
+      width: min(100% - 40px, 560px);
+      margin: 0 auto;
+      padding: 28px 0 110px;
+      display: grid;
+      gap: 0;
+    }
+
+    .menu-links a {
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 20px;
+      font-weight: 750;
+    }
+
+    .menu-links a svg {
+      width: 20px;
+      color: var(--teal-500);
+    }
+
+    main {
+      overflow: clip;
+    }
+
+    .guide-cover {
+      width: min(100%, 760px);
+      margin: var(--header-height) auto 0;
+      padding: 0;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .guide-cover > img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .hero {
+      min-height: 0;
+      padding: 46px 0;
+      display: flex;
+      align-items: center;
+      color: #fff;
+      background: var(--navy-950);
+      border-bottom: 8px solid var(--teal-500);
+    }
+
+    #overview {
+      scroll-margin-top: var(--header-height);
+    }
+
+    .hero-shell,
+    .section-shell {
+      width: min(100% - 36px, var(--content));
+      margin: 0 auto;
+    }
+
+    .hero-shell {
+      display: grid;
+      gap: 28px;
+    }
+
+    .hero-title {
+      margin: 0;
+      max-width: 760px;
+      font-size: 44px;
+      line-height: 1.1;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .hero-title span {
+      color: var(--teal-500);
+    }
+
+    .hero-stage {
+      margin: 26px 0 0;
+      color: #79e5dd;
+      font-size: 21px;
+      line-height: 1.55;
+      font-weight: 760;
+    }
+
+    .hero-intro {
+      margin: 20px 0 0;
+      max-width: 650px;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .hero-actions .button {
+      padding: 0 10px;
+      font-size: 15px;
+    }
+
+    .button {
+      min-height: 50px;
+      padding: 0 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.2;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    .button:active {
+      transform: translateY(1px);
+    }
+
+    .button-primary {
+      color: var(--navy-950);
+      background: var(--teal-500);
+    }
+
+    .button-primary:hover {
+      background: #35d4c6;
+    }
+
+    .button-outline {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.3);
+      background: transparent;
+    }
+
+    .button-outline:hover {
+      border-color: var(--teal-500);
+      background: rgba(22, 193, 178, 0.08);
+    }
+
+    .button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .hero-demo {
+      position: relative;
+      width: min(100%, 390px);
+      margin: 0 auto;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 28px;
+      background: #020e18;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.42);
+      max-height: 210px;
+      overflow: hidden;
+    }
+
+    .phone-screen {
+      min-height: 590px;
+      padding: 19px 15px 18px;
+      overflow: hidden;
+      color: var(--ink);
+      background: #f1f5f7;
+      border-radius: 20px;
+      transition: transform 420ms ease;
+    }
+
+    .hero-demo.demo-complete .phone-screen {
+      transform: translateY(-235px);
+    }
+
+    .phone-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 44px;
+      padding: 0 3px 11px;
+      border-bottom: 1px solid var(--line);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .online {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green-500);
+      font-size: 13px;
+    }
+
+    .online::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #28b585;
+    }
+
+    .chat {
+      margin-top: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .chat-label {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .voice-note {
+      margin-left: 34px;
+      padding: 14px 14px 13px;
+      display: grid;
+      gap: 9px;
+      border-radius: 8px 2px 8px 8px;
+      background: var(--teal-100);
+      border: 1px solid #b7e9e2;
+    }
+
+    .voice-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .voice-play {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--navy-900);
+      cursor: pointer;
+    }
+
+    .voice-play svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .wave {
+      flex: 1;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .wave span {
+      width: 3px;
+      height: 8px;
+      border-radius: 3px;
+      background: var(--teal-600);
+      transform-origin: center;
+    }
+
+    .wave span:nth-child(2n) { height: 18px; }
+    .wave span:nth-child(3n) { height: 26px; }
+
+    .voice-note.playing .wave span {
+      animation: wave 620ms ease-in-out infinite alternate;
+    }
+
+    .voice-note.playing .wave span:nth-child(2n) { animation-delay: 90ms; }
+    .voice-note.playing .wave span:nth-child(3n) { animation-delay: 180ms; }
+
+    @keyframes wave {
+      from { transform: scaleY(0.5); opacity: 0.55; }
+      to { transform: scaleY(1.2); opacity: 1; }
+    }
+
+    .voice-text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      font-weight: 650;
+    }
+
+    .ai-summary {
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--teal-500);
+      border-radius: var(--radius);
+      background: #fff;
+      opacity: 0.76;
+      transform: translateY(3px);
+      transition: opacity 260ms ease, transform 260ms ease, box-shadow 260ms ease;
+    }
+
+    .ai-summary.active {
+      opacity: 1;
+      transform: translateY(0);
+      box-shadow: 0 12px 24px rgba(6, 26, 44, 0.08);
+    }
+
+    .ai-title {
+      margin: 0 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--navy-900);
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .ai-title svg {
+      width: 19px;
+      color: var(--teal-600);
+    }
+
+    .summary-list {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .summary-list li {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #edf1f3;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .summary-list li:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .summary-list strong {
+      color: var(--teal-600);
+    }
+
+    .hero-footnote {
+      position: absolute;
+      right: 24px;
+      bottom: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 12px;
+      display: none;
+    }
+
+    .hero-footnote svg {
+      width: 15px;
+    }
+
+    section {
+      padding: 78px 0;
+    }
+
+    #problem {
+      padding-top: 36px;
+    }
+
+    section:nth-of-type(odd):not(.guide-cover) {
+      background: var(--surface-alt);
+    }
+
+    .section-head {
+      max-width: 780px;
+      margin-bottom: 38px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 34px;
+      line-height: 1.22;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .section-head h2.mobile-nowrap {
+      font-size: 30px;
+      white-space: nowrap;
+    }
+
+    .section-head p {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .rule-accent {
+      width: 56px;
+      height: 5px;
+      margin-bottom: 20px;
+      background: var(--teal-500);
+      border-radius: 3px;
+    }
+
+    .pain-list {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      list-style: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .pain-list li {
+      min-height: 98px;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 50px 1fr auto;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topic-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--navy-800);
+      background: var(--cyan-100);
+    }
+
+    .topic-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    .topic-icon.teal { color: #087c72; background: var(--teal-100); }
+    .topic-icon.amber { color: #a26400; background: var(--amber-100); }
+    .topic-icon.coral { color: #bd443e; background: var(--coral-100); }
+    .topic-icon.green { color: #14714f; background: var(--green-100); }
+
+    .pain-copy h3 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 21px;
+      line-height: 1.4;
+      font-weight: 850;
+    }
+
+    .pain-copy p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.62;
+    }
+
+    .pain-list .chevron {
+      width: 22px;
+      color: #8da0ae;
+    }
+
+    .pain-conclusion {
+      margin-top: 30px;
+      padding: 22px 20px;
+      color: #fff;
+      background: var(--navy-900);
+      border-left: 6px solid var(--teal-500);
+      font-size: 20px;
+      line-height: 1.62;
+      font-weight: 780;
+    }
+
+    .architecture-layout {
+      display: grid;
+      gap: 40px;
+    }
+
+    .layer-rail {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 18px;
+      list-style: none;
+    }
+
+    .layer-rail::before {
+      content: "";
+      position: absolute;
+      top: 34px;
+      bottom: 34px;
+      left: 26px;
+      width: 2px;
+      background: #9eddd7;
+    }
+
+    .layer {
+      position: relative;
+      min-height: 94px;
+      padding: 18px 16px 18px 70px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .layer:hover,
+    .layer.is-active {
+      transform: translateX(4px);
+      border-color: #83d9d1;
+      box-shadow: 0 14px 32px rgba(6, 26, 44, 0.09);
+    }
+
+    .layer-number {
+      position: absolute;
+      top: 22px;
+      left: 9px;
+      z-index: 1;
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 3px solid var(--teal-500);
+      border-radius: 50%;
+      color: var(--navy-900);
+      background: #fff;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .layer h3 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 21px;
+      line-height: 1.4;
+      font-weight: 850;
+    }
+
+    .layer p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .architecture-note {
+      padding: 24px;
+      color: #fff;
+      background: var(--navy-900);
+      border-top: 5px solid var(--teal-500);
+    }
+
+    .architecture-note p {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.56;
+      font-weight: 850;
+    }
+
+    .architecture-note span {
+      color: #74e2d8;
+    }
+
+    .knowledge-layout {
+      display: grid;
+      gap: 44px;
+    }
+
+    .knowledge-map {
+      position: relative;
+      min-height: 370px;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .kb-center {
+      position: relative;
+      z-index: 2;
+      width: 150px;
+      min-height: 150px;
+      padding: 18px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 2px solid var(--teal-500);
+      border-radius: 50%;
+      color: #fff;
+      background: var(--navy-900);
+      box-shadow: 0 16px 38px rgba(6, 26, 44, 0.22);
+      font-size: 21px;
+      line-height: 1.35;
+      font-weight: 850;
+    }
+
+    .kb-center svg {
+      width: 30px;
+      margin-bottom: 5px;
+      color: var(--teal-500);
+    }
+
+    .kb-items {
+      position: absolute;
+      inset: 20px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .kb-items li {
+      position: absolute;
+      min-width: 92px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      text-align: center;
+      color: var(--navy-800);
+      background: var(--surface-alt);
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .kb-items li:nth-child(1) { top: 8px; left: 2px; }
+    .kb-items li:nth-child(2) { top: 8px; right: 2px; }
+    .kb-items li:nth-child(3) { top: 50%; left: 0; transform: translateY(-50%); }
+    .kb-items li:nth-child(4) { top: 50%; right: 0; transform: translateY(-50%); }
+    .kb-items li:nth-child(5) { bottom: 8px; left: 2px; }
+    .kb-items li:nth-child(6) { bottom: 8px; right: 2px; }
+
+    .knowledge-copy {
+      display: grid;
+      gap: 18px;
+    }
+
+    .statement {
+      padding-left: 18px;
+      border-left: 4px solid var(--teal-500);
+    }
+
+    .statement h3 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 23px;
+      line-height: 1.45;
+    }
+
+    .statement p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.72;
+    }
+
+    .human-check {
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: #7d4d00;
+      background: var(--amber-100);
+      border-left: 4px solid var(--amber-500);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .human-check svg {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+
+    .roles-head {
+      margin: 66px 0 26px;
+    }
+
+    .roles-head h3 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 28px;
+      line-height: 1.35;
+    }
+
+    .roles-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .assistant-focus {
+      padding: 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid #74d8cf;
+      border-radius: var(--radius);
+      background: var(--teal-100);
+    }
+
+    .assistant-focus .topic-icon {
+      width: 54px;
+      height: 54px;
+      flex: 0 0 auto;
+      color: #fff;
+      background: var(--teal-600);
+    }
+
+    .assistant-focus h4 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 21px;
+      line-height: 1.35;
+    }
+
+    .assistant-focus p {
+      margin: 5px 0 0;
+      color: #476372;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .expert-grid {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .expert-card {
+      min-height: 118px;
+      padding: 16px 12px;
+      display: grid;
+      align-content: start;
+      gap: 9px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .expert-card svg {
+      width: 23px;
+      height: 23px;
+      color: var(--teal-600);
+    }
+
+    .expert-card:nth-child(2) svg { color: #a26804; }
+    .expert-card:nth-child(3) svg { color: #14714f; }
+    .expert-card:nth-child(4) svg { color: #bd443e; }
+    .expert-card:nth-child(5) svg { color: var(--navy-700); }
+
+    .expert-card h4 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .expert-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .workflow {
+      color: #fff;
+      background: var(--navy-950) !important;
+    }
+
+    .workflow .section-head h2 {
+      color: #fff;
+    }
+
+    .workflow .section-head p {
+      color: rgba(255, 255, 255, 0.68);
+    }
+
+    .workflow-rail {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      overflow: visible;
+      list-style: none;
+    }
+
+    .workflow-step {
+      min-width: 0;
+      min-height: 116px;
+      padding: 10px 4px;
+      display: grid;
+      align-content: space-between;
+      justify-items: center;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .step-index {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--navy-950);
+      background: var(--teal-500);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .workflow-step svg {
+      width: 21px;
+      height: 21px;
+      color: #72dfd5;
+    }
+
+    .workflow-step strong {
+      display: block;
+      font-size: 13px;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .process-demo {
+      margin-top: 34px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .process-source {
+      padding: 16px;
+      color: var(--ink);
+      background: #fff;
+      border-left: 4px solid var(--teal-500);
+    }
+
+    .process-source strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--teal-600);
+      font-size: 14px;
+    }
+
+    .process-source p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .process-arrow {
+      height: 56px;
+      display: grid;
+      place-items: center;
+      color: var(--teal-500);
+    }
+
+    .process-arrow svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .result-table {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      list-style: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .result-table li {
+      padding: 14px 0;
+      display: grid;
+      grid-template-columns: 62px 1fr;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .result-table strong {
+      color: #70dfd4;
+    }
+
+    .method-switch {
+      margin-top: 38px;
+    }
+
+    .method-switch h3 {
+      margin: 0 0 16px;
+      font-size: 24px;
+      line-height: 1.4;
+    }
+
+    .segment-control {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .segment-control button {
+      min-height: 46px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 5px;
+      color: rgba(255, 255, 255, 0.72);
+      background: transparent;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .segment-control button.active {
+      color: var(--navy-950);
+      background: var(--teal-500);
+    }
+
+    .method-panel {
+      margin-top: 14px;
+      padding: 20px;
+      border-left: 4px solid var(--amber-500);
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .method-panel h4 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 21px;
+      line-height: 1.4;
+    }
+
+    .method-panel p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.68;
+    }
+
+    .method-quote {
+      margin-top: 14px !important;
+      color: var(--navy-900) !important;
+      font-size: 18px !important;
+      font-weight: 850;
+    }
+
+    .report-layout {
+      display: grid;
+      gap: 36px;
+    }
+
+    .report-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 118px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-top: 5px solid var(--teal-500);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .metric:nth-child(2) { border-top-color: var(--coral-500); }
+    .metric:nth-child(3) { border-top-color: #74879a; }
+    .metric:nth-child(4) { border-top-color: var(--amber-500); }
+
+    .metric svg {
+      width: 23px;
+      color: var(--navy-700);
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 12px;
+      color: var(--navy-900);
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .chart-panel {
+      padding: 22px 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .chart-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .chart-head h3 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 19px;
+      line-height: 1.4;
+    }
+
+    .chart-head span {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .bars {
+      height: 210px;
+      margin-top: 22px;
+      padding: 0 2px 26px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      align-items: end;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .bar-group {
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .bar {
+      width: 12px;
+      min-height: 6px;
+      border-radius: 2px 2px 0 0;
+      transform-origin: bottom;
+      animation: growBar 950ms ease both;
+    }
+
+    .bar.actual { background: var(--teal-500); }
+    .bar.forecast { background: var(--amber-500); }
+
+    @keyframes growBar {
+      from { transform: scaleY(0.05); }
+      to { transform: scaleY(1); }
+    }
+
+    .bar-label {
+      position: absolute;
+      left: 50%;
+      bottom: -25px;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .legend {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .legend i {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+
+    .report-preview {
+      position: relative;
+      margin: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .report-preview img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      object-position: top center;
+      background: #e8f3f7;
+      cursor: zoom-in;
+    }
+
+    .preview-actions {
+      padding: 13px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    .preview-actions span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .zoom-button {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--navy-900);
+      cursor: pointer;
+    }
+
+    .zoom-button svg { width: 19px; }
+
+    .report-conclusion {
+      padding: 22px;
+      border-left: 6px solid var(--amber-500);
+      background: var(--amber-100);
+    }
+
+    .report-conclusion strong {
+      display: block;
+      color: #805000;
+      font-size: 21px;
+      line-height: 1.45;
+    }
+
+    .report-conclusion p {
+      margin: 8px 0 0;
+      color: #6e5b34;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .delivery-list {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      list-style: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .delivery-list li {
+      min-height: 76px;
+      padding: 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--navy-900);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .delivery-list svg {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 auto;
+      color: var(--teal-600);
+    }
+
+    .rollout {
+      margin-top: 60px;
+    }
+
+    .rollout h3 {
+      margin: 0 0 26px;
+      color: var(--navy-900);
+      font-size: 28px;
+      line-height: 1.35;
+    }
+
+    .timeline {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 0;
+      list-style: none;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 26px;
+      bottom: 26px;
+      left: 22px;
+      width: 2px;
+      background: #9eddd7;
+    }
+
+    .timeline li {
+      position: relative;
+      min-height: 118px;
+      padding: 8px 0 24px 66px;
+    }
+
+    .timeline-number {
+      position: absolute;
+      top: 4px;
+      left: 0;
+      z-index: 1;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--navy-900);
+      box-shadow: 0 0 0 5px var(--surface-alt);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .timeline h4 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 20px;
+      line-height: 1.4;
+    }
+
+    .timeline p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .expansion-band {
+      padding: 78px 0;
+      background: #fff !important;
+    }
+
+    .expansion-intro {
+      color: var(--navy-900);
+      font-size: 25px;
+      line-height: 1.55;
+      font-weight: 850;
+    }
+
+    .expansion-intro span {
+      color: var(--teal-600);
+    }
+
+    .functions {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .function {
+      min-height: 108px;
+      padding: 16px 10px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 8px;
+      text-align: center;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      color: var(--navy-900);
+      background: #fff;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .function svg {
+      width: 25px;
+      height: 25px;
+      color: var(--teal-600);
+    }
+
+    .final-cta {
+      padding: 84px 0 112px;
+      color: #fff;
+      background: var(--navy-950) !important;
+      border-top: 8px solid var(--teal-500);
+    }
+
+    .final-cta h2 {
+      margin: 0;
+      max-width: 760px;
+      color: #fff;
+      font-size: 40px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .final-cta h2 span {
+      color: var(--teal-500);
+    }
+
+    .final-cta p {
+      margin: 20px 0 0;
+      max-width: 720px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .final-cta .button {
+      width: 100%;
+      margin-top: 32px;
+      min-height: 56px;
+      font-size: 18px;
+    }
+
+    .contact-note {
+      margin-top: 26px;
+      padding-top: 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .contact-note svg {
+      width: 21px;
+      height: 21px;
+      flex: 0 0 auto;
+      color: var(--teal-500);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: none;
+      padding: 70px 14px 22px;
+      background: rgba(2, 12, 20, 0.96);
+    }
+
+    .lightbox.open {
+      display: block;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 50%;
+      color: #fff;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .lightbox-scroll {
+      width: min(100%, 1200px);
+      height: 100%;
+      margin: 0 auto;
+      overflow: auto;
+      background: #fff;
+      border-radius: var(--radius);
+    }
+
+    .lightbox-scroll img {
+      width: 100%;
+      min-width: 920px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      z-index: 150;
+      width: min(calc(100% - 36px), 460px);
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border-radius: var(--radius);
+      color: #fff;
+      background: var(--navy-800);
+      box-shadow: 0 16px 38px rgba(6, 26, 44, 0.3);
+      font-size: 15px;
+      line-height: 1.55;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 18px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .toast svg {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+      margin-top: 2px;
+      color: var(--teal-500);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 560ms ease, transform 560ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (min-width: 760px) {
+      body { font-size: 19px; }
+      #problem { padding-top: 78px; }
+      .mobile-menu-button { display: none; }
+      .desktop-nav { display: flex; }
+      .hero { min-height: 780px; padding: 70px 0 52px; }
+      .hero-shell { grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.8fr); align-items: center; gap: 58px; }
+      .hero-actions { display: flex; grid-template-columns: none; }
+      .hero-actions .button { padding: 0 20px; font-size: 17px; }
+      .hero-demo { max-height: none; overflow: visible; }
+      .hero-demo.demo-complete .phone-screen { transform: none; }
+      .hero-footnote { display: inline-flex; }
+      .hero-title { font-size: 68px; }
+      .hero-stage { font-size: 26px; }
+      .hero-intro { font-size: 20px; }
+      .section-head h2 { font-size: 44px; }
+      .section-head h2.mobile-nowrap { font-size: 44px; white-space: normal; }
+      .section-head p { font-size: 19px; }
+      .pain-list { grid-template-columns: 1fr 1fr; border-left: 1px solid var(--line); }
+      .pain-list li { padding: 24px; border-right: 1px solid var(--line); }
+      .architecture-layout { grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr); align-items: stretch; }
+      .architecture-note { display: grid; align-items: center; }
+      .knowledge-layout { grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr); align-items: center; }
+      .expert-grid { grid-template-columns: repeat(5, 1fr); }
+      .workflow-rail { display: grid; grid-template-columns: repeat(5, 1fr); overflow: visible; }
+      .workflow-step { min-width: 0; }
+      .process-demo { display: grid; grid-template-columns: 0.8fr 70px 1.2fr; align-items: center; }
+      .process-arrow { height: auto; transform: rotate(-90deg); }
+      .method-switch { max-width: 760px; }
+      .report-layout { grid-template-columns: minmax(0, 1fr) minmax(360px, 0.9fr); align-items: start; }
+      .report-metrics { grid-template-columns: repeat(4, 1fr); }
+      .report-preview { grid-column: 2; grid-row: 1 / span 3; }
+      .report-preview img { height: min(72vh, 720px); min-height: 600px; }
+      .report-conclusion { grid-column: 1; }
+      .delivery-layout { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 80px; align-items: start; }
+      .rollout { margin-top: 0; }
+      .functions { grid-template-columns: repeat(6, 1fr); }
+      .final-cta .button { width: auto; }
+    }
+
+    @media (min-width: 1100px) {
+      .desktop-nav { gap: 30px; }
+      section { padding: 100px 0; }
+      #problem { padding-top: 100px; }
+      .hero-shell,
+      .section-shell { width: min(100% - 64px, var(--content)); }
+    }
+
+    @media (max-width: 374px) {
+      .brand-name { max-width: 180px; }
+      .hero-title { font-size: 39px; }
+      .hero-stage { font-size: 19px; }
+      .expert-grid { grid-template-columns: 1fr; }
+      .functions { grid-template-columns: 1fr 1fr; }
+      .summary-list li { grid-template-columns: 48px 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="nav-shell">
+      <a class="brand" href="#top" aria-label="返回顶部">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-name">企业AI增长落地方案</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="主要导航">
+        <a href="#problem">经营问题</a>
+        <a href="#architecture">四层架构</a>
+        <a href="#workflow">业务过程</a>
+        <a href="#reports">经营报表</a>
+        <a href="#delivery">落地路径</a>
+      </nav>
+
+      <button class="icon-button mobile-menu-button" id="menuButton" type="button" aria-label="打开目录" aria-expanded="false">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+  </header>
+
+  <aside class="menu-panel" id="menuPanel" aria-hidden="true">
+    <nav class="menu-links" aria-label="移动端目录">
+      <a href="#problem"><span>老板面对的问题</span><i data-lucide="chevron-right"></i></a>
+      <a href="#architecture"><span>四层整体架构</span><i data-lucide="chevron-right"></i></a>
+      <a href="#knowledge"><span>知识库与AI数字员工</span><i data-lucide="chevron-right"></i></a>
+      <a href="#workflow"><span>销售业务过程</span><i data-lucide="chevron-right"></i></a>
+      <a href="#reports"><span>经营分析与报表</span><i data-lucide="chevron-right"></i></a>
+      <a href="#delivery"><span>交付与共创路径</span><i data-lucide="chevron-right"></i></a>
+      <a href="#contact"><span>预约方案交流</span><i data-lucide="arrow-up-right"></i></a>
+    </nav>
+  </aside>
+
+  <main id="top">
+    <section class="guide-cover" aria-label="企业AI增长落地引导页">
+      <img src="/assets/demo-lab.svg" alt="企业AI增长落地：知识库、AI数字员工、销售过程与经营报表四层体系" />
+    </section>
+
+    <section class="hero" id="overview" aria-labelledby="heroTitle">
+      <div class="hero-shell">
+        <div class="hero-copy reveal">
+          <h1 class="hero-title" id="heroTitle">企业<span>AI增长</span><br />落地方案</h1>
+          <p class="hero-stage">第一阶段：AI销售数字员工与销售增长体系建设</p>
+          <p class="hero-intro">面向生命科学中小企业，把企业知识、销售过程和经营数据连接起来，形成一套能够持续使用、持续沉淀、持续优化的增长体系。</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#architecture">了解落地路径<i data-lucide="arrow-down"></i></a>
+            <a class="button button-outline" href="#workflow">查看工作过程<i data-lucide="play"></i></a>
+          </div>
+        </div>
+
+        <div class="hero-demo reveal" aria-label="AI销售数字员工对话演示">
+          <div class="phone-screen">
+            <div class="phone-top">
+              <span>AI销售数字员工</span>
+              <span class="online">在线</span>
+            </div>
+
+            <div class="chat">
+              <span class="chat-label">销售人员 · 刚刚</span>
+              <div class="voice-note" id="voiceNote">
+                <div class="voice-row">
+                  <button class="voice-play" id="voicePlay" type="button" aria-label="播放口播整理演示">
+                    <i data-lucide="play"></i>
+                  </button>
+                  <div class="wave" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                  <span class="chat-label">00:08</span>
+                </div>
+                <p class="voice-text">客户预算约80万，技术负责人认可方案，但预算尚未审批，下周需要准备详细配置和应用案例。</p>
+              </div>
+
+              <span class="chat-label">AI数字员工 · 自动整理</span>
+              <div class="ai-summary" id="aiSummary">
+                <h2 class="ai-title"><i data-lucide="sparkles"></i>已形成销售跟进摘要</h2>
+                <ul class="summary-list">
+                  <li><strong>需求</strong><span>自动化样本处理方案</span></li>
+                  <li><strong>阶段</strong><span>LTC：方案沟通中</span></li>
+                  <li><strong>风险</strong><span>预算尚未完成审批</span></li>
+                  <li><strong>下一步</strong><span>准备配置、案例并约财务沟通</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <span class="hero-footnote"><i data-lucide="mouse-pointer-click"></i>点击语音按钮体验</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="problem" aria-labelledby="problemTitle">
+      <div class="section-shell">
+        <div class="section-head reveal">
+          <div class="rule-accent"></div>
+          <h2 id="problemTitle">销售增长为什么越来越难判断？</h2>
+          <p>老板真正担心的不是AI是否先进，而是关键经营信息发现太晚、销售过程无法判断。</p>
+        </div>
+
+        <ul class="pain-list reveal">
+          <li>
+            <span class="topic-icon teal"><i data-lucide="contact-round"></i></span>
+            <div class="pain-copy"><h3>客户信息分散</h3><p>需求、联系人和沟通背景散落在个人微信、电脑和记忆里。</p></div>
+            <i class="chevron" data-lucide="chevron-right"></i>
+          </li>
+          <li>
+            <span class="topic-icon"><i data-lucide="eye-off"></i></span>
+            <div class="pain-copy"><h3>销售过程不可见</h3><p>只看到结果，无法及时判断项目卡在哪里、需要什么支持。</p></div>
+            <i class="chevron" data-lucide="chevron-right"></i>
+          </li>
+          <li>
+            <span class="topic-icon amber"><i data-lucide="brain-circuit"></i></span>
+            <div class="pain-copy"><h3>商机判断靠经验</h3><p>项目质量、决策链和竞争风险，往往在最后阶段才暴露。</p></div>
+            <i class="chevron" data-lucide="chevron-right"></i>
+          </li>
+          <li>
+            <span class="topic-icon coral"><i data-lucide="chart-no-axes-combined"></i></span>
+            <div class="pain-copy"><h3>未来订单难预测</h3><p>月底只能复盘成交和丢单，难以提前看见收入与经营风险。</p></div>
+            <i class="chevron" data-lucide="chevron-right"></i>
+          </li>
+        </ul>
+
+        <div class="pain-conclusion reveal">销售过程持续不可见，企业就会继续为“看不见”付成本。</div>
+      </div>
+    </section>
+
+    <section id="architecture" aria-labelledby="architectureTitle">
+      <div class="section-shell">
+        <div class="section-head reveal">
+          <div class="rule-accent"></div>
+          <h2 id="architectureTitle">一套能力，打通四个层级</h2>
+          <p>不是单独部署一个聊天机器人，而是把企业知识、AI岗位、销售过程和经营管理连成一个闭环。</p>
+        </div>
+
+        <div class="architecture-layout">
+          <ol class="layer-rail reveal" id="layerRail">
+            <li class="layer is-active"><span class="layer-number">1</span><h3>企业知识库</h3><p>沉淀产品、方案、报价规则、竞品、案例和销售经验。</p></li>
+            <li class="layer"><span class="layer-number">2</span><h3>AI数字员工</h3><p>配置销售助手、销售教练、产品顾问和商机参谋等岗位。</p></li>
+            <li class="layer"><span class="layer-number">3</span><h3>销售业务过程</h3><p>从企业微信口播到纪要、阶段判断、CRM草稿和行动提醒。</p></li>
+            <li class="layer"><span class="layer-number">4</span><h3>经营分析与管理报表</h3><p>让老板看到成交、丢单、暂缓、预计订单和重点风险。</p></li>
+          </ol>
+
+          <div class="architecture-note reveal">
+            <p><span>知识有依据</span>，过程可判断，结果能复盘。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="knowledge" aria-labelledby="knowledgeTitle">
+      <div class="section-shell">
+        <div class="section-head reveal">
+          <div class="rule-accent"></div>
+          <h2 id="knowledgeTitle">知识库让AI真正懂企业</h2>
+          <p>将分散在文件、人员和聊天记录中的业务知识，整理成AI可以持续调用的企业知识底座。</p>
+        </div>
+
+        <div class="knowledge-layout">
+          <div class="knowledge-map reveal" aria-label="企业知识库示意图">
+            <div class="kb-center"><span><i data-lucide="library-big"></i><br />企业<br />知识库</span></div>
+            <ul class="kb-items">
+              <li>产品资料</li><li>行业方案</li><li>报价规则</li><li>竞品信息</li><li>销售方法</li><li>项目复盘</li>
+            </ul>
+          </div>
+
+          <div class="knowledge-copy reveal">
+            <div class="statement"><h3>统一依据</h3><p>产品、方案、报价、交付和合同规则，不再依赖个人记忆。</p></div>
+            <div class="statement"><h3>持续沉淀</h3><p>每次客户沟通和项目复盘，都可以成为团队可复用的新经验。</p></div>
+            <div class="statement"><h3>岗位共享</h3><p>销售助手、产品顾问和管理助手共用知识底座，但拥有不同的数据权限。</p></div>
+            <div class="human-check"><i data-lucide="shield-check"></i><span>知识库没有明确依据的价格、交期、合同和产品参数，AI会提示“需要人工确认”。</span></div>
+          </div>
+        </div>
+
+        <div class="roles-head reveal">
+          <h3>每位销售有助手，团队共享AI专家</h3>
+          <p>专属助手负责日常跟进，共享专家补充产品、需求、商机和风险判断。</p>
+        </div>
+
+        <div class="assistant-focus reveal">
+          <span class="topic-icon"><i data-lucide="headset"></i></span>
+          <div><h4>AI销售助手</h4><p>整理拜访、生成跟进内容、CRM草稿和下一步行动。</p></div>
+        </div>
+
+        <div class="expert-grid reveal">
+          <article class="expert-card"><i data-lucide="message-square-heart"></i><h4>销售教练</h4><p>提升销售跟进能力</p></article>
+          <article class="expert-card"><i data-lucide="package-search"></i><h4>产品顾问</h4><p>提升方案表达专业度</p></article>
+          <article class="expert-card"><i data-lucide="scan-search"></i><h4>需求教练</h4><p>帮助识别真实需求</p></article>
+          <article class="expert-card"><i data-lucide="target"></i><h4>商机参谋</h4><p>判断项目质量与风险</p></article>
+          <article class="expert-card"><i data-lucide="shield-alert"></i><h4>风控审核</h4><p>提醒商务和履约风险</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="workflow" id="workflow" aria-labelledby="workflowTitle">
+      <div class="section-shell">
+        <div class="section-head reveal">
+          <div class="rule-accent"></div>
+          <h2 id="workflowTitle">一次自然口播，形成完整销售记录</h2>
+          <p>销售不需要一次填写复杂表格。AI从自然表达中提取信息，再逐步补齐关键内容。</p>
+        </div>
+
+        <ol class="workflow-rail reveal" aria-label="销售记录生成流程">
+          <li class="workflow-step"><span class="step-index">1</span><i data-lucide="messages-square"></i><strong>企业口播</strong></li>
+          <li class="workflow-step"><span class="step-index">2</span><i data-lucide="sparkles"></i><strong>整理纪要</strong></li>
+          <li class="workflow-step"><span class="step-index">3</span><i data-lucide="milestone"></i><strong>阶段判断</strong></li>
+          <li class="workflow-step"><span class="step-index">4</span><i data-lucide="file-text"></i><strong>CRM草稿</strong></li>
+          <li class="workflow-step"><span class="step-index">5</span><i data-lucide="bell-ring"></i><strong>行动提醒</strong></li>
+        </ol>
+
+        <div class="process-demo reveal">
+          <div class="process-source"><strong>销售原始表达</strong><p>客户预算约80万，技术负责人认可方案，但预算尚未审批，下周需要详细配置和应用案例。</p></div>
+          <div class="process-arrow"><i data-lucide="arrow-down"></i></div>
+          <ul class="result-table">
+            <li><strong>需求</strong><span>自动化样本处理方案</span></li>
+            <li><strong>决策</strong><span>技术负责人认可，预算负责人待确认</span></li>
+            <li><strong>阶段</strong><span>LTC：方案沟通中</span></li>
+            <li><strong>风险</strong><span>预算尚未完成审批</span></li>
+            <li><strong>行动</strong><span>准备配置与案例，约预算负责人沟通</span></li>
+          </ul>
+        </div>
+
+        <div class="method-switch reveal">
+          <h3>不同业务，用不同方法判断</h3>
+          <div class="segment-control" role="tablist" aria-label="业务类型">
+            <button class="active" type="button" role="tab" aria-selected="true" data-method="project">项目型业务</button>
+            <button type="button" role="tab" aria-selected="false" data-method="transaction">交易型业务</button>
+          </div>
+          <div class="method-panel" id="methodPanel" role="tabpanel">
+            <h4>MEDDPPICCR + LTC</h4>
+            <p>围绕客户价值、决策链、预算、竞争、采购流程和项目阶段，持续判断项目质量与推进风险。</p>
+            <p class="method-quote">AI把“销售感觉”变成“商机判断”。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reports" aria-labelledby="reportsTitle">
+      <div class="section-shell">
+        <div class="section-head reveal">
+          <div class="rule-accent"></div>
+          <h2 class="mobile-nowrap" id="reportsTitle">老板看到的不只是结果</h2>
+          <p>AI把销售每天跟客户沟通的信息，自动整理成老板和团队经理看得懂的表格和报表。</p>
+        </div>
+
+        <div class="report-layout">
+          <div class="report-metrics reveal">
+            <div class="metric"><i data-lucide="badge-check"></i><strong>成交</strong><span>已到账订单与收入</span></div>
+            <div class="metric"><i data-lucide="circle-x"></i><strong>丢单</strong><span>金额、原因与复盘</span></div>
+            <div class="metric"><i data-lucide="pause-circle"></i><strong>暂缓</strong><span>停滞项目与激活机会</span></div>
+            <div class="metric"><i data-lucide="telescope"></i><strong>预计订单</strong><span>月份、赢率与风险</span></div>
+          </div>
+
+          <div class="chart-panel reveal" aria-label="成交与预计订单趋势示意图">
+            <div class="chart-head"><h3>成交与预计订单趋势</h3><span>按月份查看</span></div>
+            <div class="bars">
+              <div class="bar-group"><span class="bar actual" style="height:34%"></span><span class="bar forecast" style="height:10%"></span><span class="bar-label">1月</span></div>
+              <div class="bar-group"><span class="bar actual" style="height:48%"></span><span class="bar forecast" style="height:16%"></span><span class="bar-label">2月</span></div>
+              <div class="bar-group"><span class="bar actual" style="height:42%"></span><span class="bar forecast" style="height:24%"></span><span class="bar-label">3月</span></div>
+              <div class="bar-group"><span class="bar actual" style="height:58%"></span><span class="bar forecast" style="height:20%"></span><span class="bar-label">4月</span></div>
+              <div class="bar-group"><span class="bar actual" style="height:38%"></span><span class="bar forecast" style="height:44%"></span><span class="bar-label">5月</span></div>
+              <div class="bar-group"><span class="bar actual" style="height:24%"></span><span class="bar forecast" style="height:68%"></span><span class="bar-label">6月</span></div>
+            </div>
+            <div class="legend"><span><i style="background:var(--teal-500)"></i>已成交</span><span><i style="background:var(--amber-500)"></i>预计订单</span></div>
+          </div>
+
+          <figure class="report-preview reveal">
+            <img id="reportPreviewImage" src="/assets/demo-lab.svg" alt="成交、丢单、暂缓与预计订单经营报表示例完整页面" role="button" tabindex="0" aria-label="放大查看完整经营报表示例" />
+            <figcaption class="preview-actions"><span>真实报表样式预览，点击放大查看</span><button class="zoom-button" id="openReport" type="button" aria-label="放大查看报表示例"><i data-lucide="zoom-in"></i></button></figcaption>
+          </figure>
+
+          <div class="report-conclusion reveal">
+            <strong>提前看见未来订单和经营风险</strong>
+            <p>按照人员、团队、行业、区域、月份和季度查看，让经营会议从“听汇报”转向“看依据、定动作”。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="delivery" aria-labelledby="deliveryTitle">
+      <div class="section-shell">
+        <div class="section-head reveal">
+          <div class="rule-accent"></div>
+          <h2 id="deliveryTitle">第一阶段，企业最终获得什么</h2>
+          <p>交付的不是一个孤立工具，而是一套可以被销售使用、被经理管理、被老板复盘的增长能力。</p>
+        </div>
+
+        <div class="delivery-layout">
+          <ul class="delivery-list reveal">
+            <li><i data-lucide="circle-check-big"></i><span>一套企业销售知识库</span></li>
+            <li><i data-lucide="circle-check-big"></i><span>一组AI销售数字员工</span></li>
+            <li><i data-lucide="circle-check-big"></i><span>一套销售过程管理规则</span></li>
+            <li><i data-lucide="circle-check-big"></i><span>个人、团队和老板三级报表</span></li>
+            <li><i data-lucide="circle-check-big"></i><span>培训、共创与落地陪跑</span></li>
+          </ul>
+
+          <div class="rollout reveal">
+            <h3>从小范围共创开始</h3>
+            <ol class="timeline">
+              <li><span class="timeline-number">1</span><h4>知识整理与配置</h4><p>梳理产品、方案、销售方法和业务规则，配置首批AI岗位。</p></li>
+              <li><span class="timeline-number">2</span><h4>2～3名销售共创试点</h4><p>选择真实客户和商机，用真实业务验证输入、输出和管理流程。</p></li>
+              <li><span class="timeline-number">3</span><h4>团队推广与持续优化</h4><p>形成使用习惯、复盘机制和管理报表，再逐步覆盖销售团队。</p></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="expansion-band" aria-labelledby="expansionTitle">
+      <div class="section-shell">
+        <p class="expansion-intro reveal" id="expansionTitle">销售场景跑通后，可以逐步扩展到<span>市场、产品、运营、战略和服务</span>，形成企业级AI数字员工组织能力。</p>
+        <div class="functions reveal">
+          <div class="function"><i data-lucide="megaphone"></i><span>市场</span></div>
+          <div class="function"><i data-lucide="handshake"></i><span>销售</span></div>
+          <div class="function"><i data-lucide="box"></i><span>产品</span></div>
+          <div class="function"><i data-lucide="settings-2"></i><span>运营</span></div>
+          <div class="function"><i data-lucide="route"></i><span>战略</span></div>
+          <div class="function"><i data-lucide="headphones"></i><span>服务</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" id="contact" aria-labelledby="contactTitle">
+      <div class="section-shell reveal">
+        <h2 id="contactTitle">先把<span>销售增长</span>做实</h2>
+        <p>建议从一个销售团队、2～3名销售和一批真实商机开始，用真实业务验证AI数字员工的价值，再逐步推广。</p>
+        <button class="button button-primary" id="contactButton" type="button"><i data-lucide="calendar-days"></i>预约一次方案交流</button>
+        <div class="contact-note"><i data-lucide="message-circle"></i><span>可直接联系向您发送本页面的方案顾问，安排一次针对企业现状的交流。</span></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="lightbox" id="reportLightbox" role="dialog" aria-modal="true" aria-label="经营报表示例" aria-hidden="true">
+    <button class="lightbox-close" id="closeReport" type="button" aria-label="关闭报表预览"><i data-lucide="x"></i></button>
+    <div class="lightbox-scroll"><img src="/assets/demo-lab.svg" alt="经营报表示例大图" /></div>
+  </div>
+
+  <div class="toast" id="contactToast" role="status" aria-live="polite"><i data-lucide="circle-check"></i><span>预约沟通文字已复制，可返回聊天发送给方案顾问。</span></div>
+
+  <script>
+    if (window.lucide) {
+      window.lucide.createIcons({ attrs: { "stroke-width": 2 } });
+    }
+
+    const body = document.body;
+    const menuButton = document.getElementById("menuButton");
+    const menuPanel = document.getElementById("menuPanel");
+    const scrollProgress = document.getElementById("scrollProgress");
+
+    function setMenu(open) {
+      menuPanel.classList.toggle("open", open);
+      menuPanel.setAttribute("aria-hidden", String(!open));
+      menuButton.setAttribute("aria-expanded", String(open));
+      body.classList.toggle("menu-open", open);
+      if (window.lucide) {
+        menuButton.innerHTML = `<i data-lucide="${open ? "x" : "menu"}"></i>`;
+        window.lucide.createIcons({ attrs: { "stroke-width": 2 } });
+      }
+    }
+
+    menuButton.addEventListener("click", () => setMenu(!menuPanel.classList.contains("open")));
+    menuPanel.querySelectorAll("a").forEach(link => link.addEventListener("click", () => setMenu(false)));
+
+    function updateScrollState() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      scrollProgress.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+      if (window.scrollY < 500) {
+        document.querySelectorAll(".desktop-nav a").forEach(link => link.classList.remove("active"));
+      }
+    }
+
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+    updateScrollState();
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach(element => revealObserver.observe(element));
+
+    const layerItems = Array.from(document.querySelectorAll(".layer"));
+    let layerIndex = 0;
+    setInterval(() => {
+      if (document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      layerItems.forEach(item => item.classList.remove("is-active"));
+      layerIndex = (layerIndex + 1) % layerItems.length;
+      layerItems[layerIndex].classList.add("is-active");
+    }, 2200);
+
+    const voicePlay = document.getElementById("voicePlay");
+    const voiceNote = document.getElementById("voiceNote");
+    const aiSummary = document.getElementById("aiSummary");
+    const heroDemo = document.querySelector(".hero-demo");
+    let voiceTimer;
+
+    voicePlay.addEventListener("click", () => {
+      clearTimeout(voiceTimer);
+      heroDemo.classList.remove("demo-complete");
+      voiceNote.classList.add("playing");
+      aiSummary.classList.remove("active");
+      voicePlay.setAttribute("aria-label", "正在整理口播内容");
+      voiceTimer = setTimeout(() => {
+        voiceNote.classList.remove("playing");
+        aiSummary.classList.add("active");
+        heroDemo.classList.add("demo-complete");
+        voicePlay.setAttribute("aria-label", "重新播放口播整理演示");
+      }, 1600);
+    });
+
+    const methodCopy = {
+      project: {
+        title: "MEDDPPICCR + LTC",
+        body: "围绕客户价值、决策链、预算、竞争、采购流程和项目阶段，持续判断项目质量与推进风险。",
+        quote: "AI把“销售感觉”变成“商机判断”。"
+      },
+      transaction: {
+        title: "AI交易分析",
+        body: "结合客户复购周期、订单变化、产品结构、库存、回款和异常波动，发现下一次交易机会与风险。",
+        quote: "AI把“零散订单”变成“经营洞察”。"
+      }
+    };
+
+    const methodPanel = document.getElementById("methodPanel");
+    document.querySelectorAll("[data-method]").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll("[data-method]").forEach(item => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-selected", String(active));
+        });
+        const copy = methodCopy[button.dataset.method];
+        methodPanel.innerHTML = `<h4>${copy.title}</h4><p>${copy.body}</p><p class="method-quote">${copy.quote}</p>`;
+      });
+    });
+
+    const openReport = document.getElementById("openReport");
+    const reportPreviewImage = document.getElementById("reportPreviewImage");
+    const closeReport = document.getElementById("closeReport");
+    const reportLightbox = document.getElementById("reportLightbox");
+
+    function setReport(open) {
+      reportLightbox.classList.toggle("open", open);
+      reportLightbox.setAttribute("aria-hidden", String(!open));
+      body.classList.toggle("dialog-open", open);
+      if (open) closeReport.focus();
+    }
+
+    openReport.addEventListener("click", () => setReport(true));
+    reportPreviewImage.addEventListener("click", () => setReport(true));
+    reportPreviewImage.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        setReport(true);
+      }
+    });
+    closeReport.addEventListener("click", () => setReport(false));
+    reportLightbox.addEventListener("click", event => {
+      if (event.target === reportLightbox) setReport(false);
+    });
+
+    const contactButton = document.getElementById("contactButton");
+    const contactToast = document.getElementById("contactToast");
+    let toastTimer;
+
+    contactButton.addEventListener("click", async () => {
+      const message = "您好，我想进一步了解企业AI增长落地方案，并沟通销售数字员工的共创试点。";
+      try {
+        await navigator.clipboard.writeText(message);
+      } catch (error) {
+        const textarea = document.createElement("textarea");
+        textarea.value = message;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+      }
+      clearTimeout(toastTimer);
+      contactToast.classList.add("visible");
+      toastTimer = setTimeout(() => contactToast.classList.remove("visible"), 2800);
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        if (reportLightbox.classList.contains("open")) setReport(false);
+        if (menuPanel.classList.contains("open")) setMenu(false);
+      }
+    });
+
+    const observedSections = Array.from(document.querySelectorAll("main section[id]"));
+    const navLinks = Array.from(document.querySelectorAll(".desktop-nav a"));
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(link => link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`));
+      });
+    }, { rootMargin: "-35% 0px -55% 0px", threshold: 0 });
+    observedSections.forEach(section => sectionObserver.observe(section));
+  </script>
+</body>
+</html>

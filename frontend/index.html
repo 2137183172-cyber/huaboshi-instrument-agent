@@ -1,0 +1,3278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>华博士</title>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --bg-soft: #eef4ff;
+      --text: #172033;
+      --muted: #6a7588;
+      --line: #e5eaf3;
+      --card: rgba(255, 255, 255, 0.88);
+      --primary: #0c7ff2;
+      --primary-dark: #1557d6;
+      --violet: #6055fe;
+      --green: #12b76a;
+      --shadow: 0 18px 55px rgba(31, 48, 84, 0.10);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      font-family: "HarmonyOS Sans SC", "MiSans", "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-size: 17px;
+      background:
+        radial-gradient(circle at 22% 10%, rgba(78, 126, 255, 0.18), transparent 32%),
+        radial-gradient(circle at 86% 18%, rgba(23, 184, 255, 0.18), transparent 30%),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 48%, #ffffff 100%);
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(12, 127, 242, 0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(12, 127, 242, 0.055) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.8), transparent 72%);
+    }
+
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .app {
+      position: relative;
+      min-height: 100vh;
+      padding: 24px 34px;
+      overflow-x: hidden;
+      overflow-y: visible;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1280px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 5;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      font-size: 20px;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.78);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 50% 28%, rgba(255, 233, 216, 0.96) 0 22%, transparent 23%),
+        linear-gradient(145deg, #eef5ff 0%, #d7e8ff 48%, #c8d6ea 100%);
+      box-shadow: 0 12px 28px rgba(12, 127, 242, 0.18);
+      overflow: hidden;
+    }
+
+    .doctor-icon {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .doctor-photo {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .home {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      align-items: start;
+      justify-items: center;
+      transition: opacity 0.24s ease, transform 0.24s ease;
+    }
+
+    .chat-mode .home {
+      display: none;
+    }
+
+    .home-card {
+      width: min(1000px, 100%);
+      text-align: center;
+      padding: clamp(18px, 3vh, 42px) 0 90px;
+      animation: riseIn 0.5s ease both;
+    }
+
+    .ai-badge {
+      width: 250px;
+      height: 335px;
+      margin: 0 auto 24px;
+      display: block;
+      position: relative;
+      overflow: visible;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .ai-badge::before {
+      content: none;
+    }
+
+    .hero-doctor {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    .headline {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .headline span {
+      background: linear-gradient(110deg, #0b63ce, #6055fe 52%, #01a7d7);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .subhead {
+      max-width: 820px;
+      margin: 16px auto 30px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .composer {
+      position: relative;
+      display: flex;
+      gap: 14px;
+      align-items: flex-end;
+      padding: 18px;
+      border: 1.5px solid rgba(96, 85, 254, 0.48);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.90);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .suggestions {
+      position: absolute;
+      left: 16px;
+      right: 66px;
+      top: calc(100% + 8px);
+      z-index: 20;
+      display: none;
+      max-height: 260px;
+      overflow: auto;
+      padding: 8px;
+      border: 1px solid rgba(137, 153, 181, 0.24);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 18px 42px rgba(31, 48, 84, 0.14);
+      backdrop-filter: blur(14px);
+    }
+
+    .suggestions.show {
+      display: grid;
+      gap: 6px;
+    }
+
+    .chat-composer .suggestions {
+      top: auto;
+      bottom: calc(100% + 8px);
+    }
+
+    .suggestion-item {
+      width: 100%;
+      padding: 10px 11px;
+      border-radius: 12px;
+      color: #1f2a3d;
+      background: transparent;
+      text-align: left;
+    }
+
+    .suggestion-item:hover {
+      background: #f2f6ff;
+    }
+
+    .suggestion-title {
+      display: block;
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .suggestion-meta {
+      display: block;
+      margin-top: 4px;
+      color: #6a7588;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .composer::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      z-index: -1;
+      border-radius: 24px;
+      background: linear-gradient(120deg, rgba(12, 127, 242, 0.20), rgba(96, 85, 254, 0.18), rgba(18, 183, 106, 0.10));
+      filter: blur(15px);
+      opacity: 0.9;
+    }
+
+    .composer textarea {
+      width: 100%;
+      min-height: 72px;
+      max-height: 190px;
+      resize: none;
+      border: 0;
+      outline: 0;
+      color: var(--text);
+      background: transparent;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .composer textarea::placeholder {
+      color: #9aa5b7;
+    }
+
+    .voice-btn {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: #41526b;
+      border: 1px solid rgba(137, 153, 181, 0.34);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 8px 18px rgba(31, 48, 84, 0.08);
+      transition: color 0.16s ease, border-color 0.16s ease, background 0.16s ease, transform 0.16s ease;
+    }
+
+    .voice-btn:hover {
+      color: #0c7ff2;
+      border-color: rgba(12, 127, 242, 0.42);
+      transform: translateY(-1px);
+    }
+
+    .voice-btn svg {
+      width: 21px;
+      height: 21px;
+    }
+
+    .voice-btn.is-recording {
+      color: #fff;
+      border-color: #e5484d;
+      background: #e5484d;
+      animation: voicePulse 1.25s ease-in-out infinite;
+    }
+
+    .voice-btn.is-processing,
+    .voice-btn:disabled {
+      cursor: wait;
+      color: #7a8799;
+      background: #eef2f7;
+      box-shadow: none;
+    }
+
+    .voice-status {
+      position: absolute;
+      left: 18px;
+      top: calc(100% + 8px);
+      z-index: 24;
+      max-width: calc(100% - 36px);
+      padding: 8px 11px;
+      border: 1px solid rgba(137, 153, 181, 0.24);
+      border-radius: 10px;
+      color: #40506a;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 12px 28px rgba(31, 48, 84, 0.12);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .chat-composer .voice-status {
+      top: auto;
+      bottom: calc(100% + 8px);
+    }
+
+    .send-btn {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      color: #fff;
+      border-radius: 999px;
+      background: linear-gradient(215deg, #505efb, #0c7ff2 46%, #20c9ff);
+      box-shadow: 0 12px 24px rgba(12, 127, 242, 0.25);
+      transition: transform 0.16s ease, opacity 0.16s ease;
+    }
+
+    .send-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+      background: #cbd5e1;
+      box-shadow: none;
+    }
+
+    .send-btn:not(:disabled):hover {
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    .send-btn svg {
+      width: 21px;
+      height: 21px;
+    }
+
+    @keyframes voicePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(229, 72, 77, 0.24); }
+      50% { box-shadow: 0 0 0 8px rgba(229, 72, 77, 0); }
+    }
+
+    .prompt-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+      margin-bottom: 28px;
+    }
+
+    .prompt-card {
+      min-height: 108px;
+      padding: 18px;
+      text-align: left;
+      border: 1px solid rgba(137, 153, 181, 0.20);
+      border-radius: 18px;
+      color: #263447;
+      background: rgba(255, 255, 255, 0.66);
+      box-shadow: 0 10px 28px rgba(31, 48, 84, 0.06);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .prompt-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(12, 127, 242, 0.35);
+      box-shadow: 0 20px 42px rgba(31, 48, 84, 0.10);
+    }
+
+    .prompt-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .prompt-card span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .capability-strip {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .capability-strip span {
+      padding: 8px 14px;
+      color: #40506a;
+      border: 1px solid rgba(137, 153, 181, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.56);
+      font-size: 14px;
+    }
+
+    .chat {
+      display: none;
+      max-width: 1180px;
+      height: calc(100vh - 82px);
+      margin: 18px auto 0;
+      padding-bottom: 218px;
+      position: relative;
+    }
+
+    .chat-mode .chat {
+      display: block;
+    }
+
+    .conversation-context {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 0 6px 2px;
+      padding: 10px 0 12px;
+      border-bottom: 1px solid rgba(223, 231, 243, 0.9);
+      color: #52647c;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .conversation-context[hidden] {
+      display: none;
+    }
+
+    .conversation-context strong {
+      color: #1d3557;
+      font-weight: 700;
+    }
+
+    .conversation-context-line {
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .conversation-context .context-divider {
+      color: #b1bdcc;
+    }
+
+    .conversation-context-label {
+      color: #718096;
+      font-size: 13px;
+    }
+
+    .conversation-context-object {
+      color: #174ea6;
+    }
+
+    .conversation-context-type {
+      color: #718096;
+      font-size: 13px;
+    }
+
+    .recommendation-section {
+      margin-top: 16px;
+    }
+
+    .recommendation-title {
+      margin: 0 0 10px;
+      color: #172b4d;
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .next-actions {
+      margin-top: 17px;
+      padding-top: 15px;
+      border-top: 1px solid #dfe7f3;
+    }
+
+    .next-actions-title {
+      margin: 0 0 9px;
+      color: #172b4d;
+      font-size: 17px;
+      line-height: 1.45;
+    }
+
+    .next-actions-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .next-action {
+      min-height: 36px;
+      padding: 8px 13px;
+      border: 1px solid rgba(12, 127, 242, 0.20);
+      border-radius: 9px;
+      color: #2457a7;
+      background: #f7faff;
+      font-size: 14px;
+      line-height: 1.35;
+      text-align: left;
+      transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
+    }
+
+    .next-action:hover {
+      border-color: rgba(12, 127, 242, 0.48);
+      color: #0b63ce;
+      background: #edf5ff;
+    }
+
+    .chat-scroll {
+      height: 100%;
+      overflow-y: auto;
+      padding: 18px 6px 34px;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 transparent;
+    }
+
+    .chat-scroll::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .chat-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+
+    .message {
+      display: flex;
+      gap: 12px;
+      margin: 0 0 26px;
+      animation: messageIn 0.28s ease both;
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(145deg, #eef5ff, #dce9fb);
+      box-shadow: 0 8px 20px rgba(12, 127, 242, 0.16);
+      overflow: hidden;
+    }
+
+    .bubble-wrap {
+      max-width: min(940px, calc(100% - 62px));
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 25px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(137, 153, 181, 0.22);
+      background: rgba(255, 255, 255, 0.72);
+      color: #53637c;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .source-badge.llm {
+      border-color: rgba(18, 183, 106, 0.22);
+      background: rgba(18, 183, 106, 0.10);
+      color: #087443;
+    }
+
+    .source-badge.fallback {
+      border-color: rgba(247, 144, 9, 0.24);
+      background: rgba(247, 144, 9, 0.10);
+      color: #9a5b00;
+    }
+
+    .bubble {
+      padding: 17px 19px;
+      border-radius: 15px;
+      line-height: 1.85;
+      font-size: 17px;
+      word-break: break-word;
+      white-space: normal;
+    }
+
+    .user .bubble {
+      color: #fff;
+      background: #0c7ff2;
+      border-top-right-radius: 4px;
+      box-shadow: 0 10px 28px rgba(12, 127, 242, 0.20);
+    }
+
+    .assistant .bubble {
+      background: #f6f7f9;
+      border: 1px solid rgba(229, 234, 243, 0.82);
+      border-top-left-radius: 4px;
+    }
+
+    .thinking-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      color: #027a48;
+      background: #edfbf3;
+      font-size: 14px;
+    }
+
+    .thinking-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #12b76a;
+      animation: pulse 1s linear infinite;
+    }
+
+    .result-cards {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .research-path {
+      margin-top: 16px;
+      padding-top: 18px;
+      border-top: 1px solid #dfe7f3;
+    }
+
+    .research-path h3,
+    .topic-product-title,
+    .followup-title {
+      margin: 0;
+      color: #172b4d;
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .research-path-meta {
+      margin: 6px 0 0;
+      color: #52708f;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .research-stage-list {
+      display: grid;
+      gap: 0;
+      margin-top: 12px;
+    }
+
+    .research-stage {
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr);
+      gap: 10px;
+      padding: 11px 0;
+      border-top: 1px solid #e7edf5;
+    }
+
+    .research-stage:first-child {
+      border-top: 0;
+    }
+
+    .research-stage-no {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      color: #fff;
+      background: #2d72d9;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .research-stage strong {
+      display: block;
+      color: #1d3557;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .research-stage p {
+      margin: 3px 0 0;
+      color: #53657a;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .stage-open {
+      margin-top: 7px;
+      padding: 0;
+      border: 0;
+      color: #1765c0;
+      background: transparent;
+      font-size: 13px;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    .stage-open:hover {
+      color: #0b4b98;
+      text-decoration: underline;
+    }
+
+    .topic-product-section {
+      margin-top: 18px;
+    }
+
+    .topic-products {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .topic-products .device-card {
+      padding: 16px;
+      border-radius: 10px;
+    }
+
+    .topic-products .device-title {
+      font-size: 17px;
+    }
+
+    .topic-products .reason-list,
+    .topic-products .section-text {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .followup-section {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid #dfe7f3;
+    }
+
+    .followup-list {
+      display: grid;
+      margin-top: 8px;
+    }
+
+    .followup-question {
+      padding: 10px 0;
+      border-top: 1px solid #edf1f6;
+      color: #2457a7;
+      font-size: 14px;
+      line-height: 1.55;
+      text-align: left;
+      background: transparent;
+    }
+
+    .followup-question:first-child {
+      border-top: 0;
+    }
+
+    .followup-question:hover {
+      color: #0c7ff2;
+    }
+
+    .scenario-plan {
+      margin-top: 16px;
+      padding-top: 18px;
+      border-top: 1px solid #dfe7f3;
+    }
+
+    .scenario-title {
+      margin: 0;
+      color: #172b4d;
+      font-size: 20px;
+      line-height: 1.45;
+    }
+
+    .scenario-meta {
+      margin: 7px 0 0;
+      color: #52708f;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .scenario-positioning {
+      margin: 14px 0 0;
+      color: #34445a;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .scenario-steps {
+      display: grid;
+      gap: 0;
+      margin-top: 16px;
+    }
+
+    .scenario-step {
+      padding: 16px 0 16px 16px;
+      border-top: 1px solid #e7edf5;
+      border-left: 3px solid #2d72d9;
+    }
+
+    .scenario-step:first-child {
+      border-top: 0;
+    }
+
+    .scenario-step h4 {
+      margin: 0;
+      color: #1d3557;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .scenario-step p {
+      margin: 7px 0 0;
+      color: #4d5f75;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .scenario-relations {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .scenario-relation {
+      color: #3a4657;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .scenario-relation strong {
+      color: #174ea6;
+    }
+
+    .equipment-table-section {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid #dfe7f3;
+    }
+
+    .equipment-table-title {
+      margin: 0 0 12px;
+      color: #172b4d;
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .equipment-table-wrap {
+      overflow: hidden;
+      border: 1px solid #d8e1ed;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(32, 66, 112, 0.08);
+    }
+
+    .equipment-table {
+      width: 100%;
+      min-width: 0;
+      border-collapse: collapse;
+      table-layout: fixed;
+      color: #314156;
+      font-size: 12.5px;
+      line-height: 1.6;
+    }
+
+    .equipment-table th,
+    .equipment-table td {
+      width: auto;
+      padding: 11px 10px;
+      border-right: 1px solid #d8e1ed;
+      border-bottom: 1px solid #d8e1ed;
+      vertical-align: middle;
+      text-align: center;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .equipment-table th:last-child,
+    .equipment-table td:last-child {
+      border-right: 0;
+    }
+
+    .equipment-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .equipment-table th {
+      color: #172033;
+      background: #f4f7fb;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .equipment-table th:nth-child(1) { width: 34%; }
+    .equipment-table th:nth-child(2) { width: 66%; }
+
+    .equipment-table tbody tr:nth-child(even) td {
+      background: #fbfcfe;
+    }
+
+    .product-link {
+      padding: 0;
+      color: #165dcc;
+      font: inherit;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      background: transparent;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 720px) {
+      .equipment-table-section {
+        margin-left: -2px;
+        margin-right: -2px;
+      }
+
+      .equipment-table-wrap {
+        overflow: hidden;
+        border-radius: 8px;
+      }
+
+      .equipment-table,
+      .equipment-table tbody,
+      .equipment-table tr,
+      .equipment-table td {
+        display: block;
+        width: 100%;
+      }
+
+      .equipment-table thead {
+        display: none;
+      }
+
+      .equipment-table tbody tr {
+        padding: 6px 0;
+        border-bottom: 1px solid #d8e1ed;
+      }
+
+      .equipment-table tbody tr:last-child {
+        border-bottom: 0;
+      }
+
+      .equipment-table tbody tr:nth-child(even) td {
+        background: transparent;
+      }
+
+      .equipment-table td,
+      .equipment-table td:last-child {
+        display: grid;
+        grid-template-columns: 6.5rem minmax(0, 1fr);
+        gap: 8px;
+        align-items: center;
+        padding: 8px 10px;
+        border: 0;
+        text-align: center;
+      }
+
+      .equipment-table td::before {
+        content: attr(data-label);
+        color: #65758c;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .equipment-table td > * {
+        min-width: 0;
+      }
+    }
+
+    .product-link:hover,
+    .product-link:focus-visible {
+      color: #0b3f99;
+      outline: none;
+    }
+
+    .product-dialog {
+      width: min(760px, calc(100vw - 32px));
+      max-height: min(78vh, 760px);
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      color: var(--text);
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(20, 39, 74, 0.26);
+    }
+
+    .product-dialog::backdrop {
+      background: rgba(19, 34, 57, 0.42);
+    }
+
+    .product-dialog-inner {
+      max-height: min(78vh, 760px);
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .product-dialog-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e4eaf2;
+    }
+
+    .product-dialog-title {
+      margin: 0;
+      color: #172b4d;
+      font-size: 21px;
+      line-height: 1.45;
+    }
+
+    .dialog-close {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid #dbe4ef;
+      border-radius: 6px;
+      color: #4a5a70;
+      background: #fff;
+      font-size: 23px;
+      line-height: 1;
+    }
+
+    .dialog-close:hover { background: #f3f6fa; }
+
+    .product-detail-section {
+      margin-top: 18px;
+    }
+
+    .product-detail-section h4 {
+      margin: 0 0 7px;
+      color: #1c4e93;
+      font-size: 15px;
+    }
+
+    .product-detail-section p {
+      margin: 0;
+      color: #405069;
+      font-size: 15px;
+      line-height: 1.75;
+      white-space: pre-wrap;
+    }
+
+    .device-card,
+    .info-card {
+      padding: 20px;
+      border: 1px solid rgba(229, 234, 243, 0.95);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 10px 26px rgba(31, 48, 84, 0.06);
+    }
+
+    .device-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .device-context-line {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin: -2px 0 8px;
+      color: #63738a;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .device-rank {
+      color: #175bb5;
+      font-weight: 700;
+    }
+
+    .device-stage {
+      color: #63738a;
+    }
+
+    .device-card-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #edf1f6;
+    }
+
+    .product-action {
+      min-height: 34px;
+      padding: 7px 13px;
+      border: 1px solid rgba(12, 127, 242, 0.26);
+      border-radius: 8px;
+      color: #165dcc;
+      background: #f7faff;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .product-action:hover {
+      border-color: rgba(12, 127, 242, 0.52);
+      color: #0b63ce;
+      background: #edf5ff;
+    }
+
+    .product-action.secondary {
+      color: #53657a;
+      border-color: #d7e0eb;
+      background: #fff;
+    }
+
+    .product-action.secondary:hover {
+      color: #244d7d;
+      border-color: #aebfd5;
+      background: #f8fbff;
+    }
+
+    .device-title {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.45;
+    }
+
+    .reason-list {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: #36445a;
+      font-size: 16px;
+      line-height: 1.78;
+    }
+
+    .match-box {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border: 1px solid rgba(12, 127, 242, 0.16);
+      border-radius: 12px;
+      color: #174ea6;
+      background: linear-gradient(135deg, #f2f7ff, #ffffff);
+      line-height: 1.65;
+      font-size: 13px;
+    }
+
+    .source-row {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 9px;
+    }
+
+    .source-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      color: #2455d6;
+      background: #eef4ff;
+      font-size: 12px;
+    }
+
+    .evidence-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .evidence-item {
+      padding: 10px 12px;
+      border-left: 3px solid rgba(12, 127, 242, 0.50);
+      border-radius: 10px;
+      color: #3a4657;
+      background: #fbfdff;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .evidence-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+      color: #6a7588;
+      font-size: 12px;
+    }
+
+    .note-list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: #5b6679;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .section-box {
+      margin-top: 12px;
+      padding: 15px;
+      border-radius: 14px;
+      background: #f8fbff;
+      border: 1px solid #edf2fb;
+    }
+
+    .section-title {
+      margin-bottom: 8px;
+      color: #174ea6;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .section-text {
+      color: #3a4657;
+      font-size: 16px;
+      line-height: 1.85;
+      white-space: pre-wrap;
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      color: #40506a;
+      background: #eef4ff;
+      font-size: 13px;
+    }
+
+    .tag.task {
+      color: #0f6c48;
+      background: #ebfbf2;
+    }
+
+    .info-card strong {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 17px;
+    }
+
+    .clarify-card {
+      margin-top: 12px;
+      background:
+        linear-gradient(135deg, rgba(242, 246, 255, 0.95), rgba(255, 255, 255, 0.95));
+      border-color: rgba(96, 85, 254, 0.20);
+    }
+
+    .clarify-group {
+      padding: 12px 0;
+      border-top: 1px solid #edf2fb;
+    }
+
+    .clarify-group:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .clarify-question {
+      margin-bottom: 10px;
+      color: #202933;
+      font-size: 16px;
+      font-weight: 650;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .question-chip {
+      padding: 10px 15px;
+      border: 1px solid #dbdce0;
+      border-radius: 999px;
+      color: #2c384d;
+      background: #fff;
+      font-size: 15px;
+      transition: background 0.16s ease, border-color 0.16s ease;
+    }
+
+    .question-chip:hover {
+      border-color: rgba(12, 127, 242, 0.32);
+      background: #f2f6ff;
+    }
+
+    .clarify-chip {
+      border-color: rgba(12, 127, 242, 0.20);
+      color: #174ea6;
+      background: #fff;
+    }
+
+    .clarify-chip:hover {
+      border-color: rgba(96, 85, 254, 0.42);
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--violet));
+    }
+
+    .clarify-chip.selected {
+      border-color: rgba(12, 127, 242, 0.54);
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--violet));
+      box-shadow: 0 8px 18px rgba(12, 127, 242, 0.16);
+    }
+
+    .clarify-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #edf2fb;
+    }
+
+    .clarify-count {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .clarify-submit {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 18px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--violet));
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(12, 127, 242, 0.18);
+    }
+
+    .clarify-submit:disabled {
+      cursor: not-allowed;
+      color: #8b98ac;
+      background: #eef2f7;
+      box-shadow: none;
+    }
+
+    .lead-form-card {
+      margin-top: 12px;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid rgba(12, 127, 242, 0.22);
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 18px 42px rgba(12, 50, 117, 0.12);
+    }
+
+    .lead-form-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 0;
+      padding: 19px 22px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 92% 12%, rgba(255, 255, 255, 0.28), transparent 28%),
+        linear-gradient(135deg, #0c7ff2 0%, #4267ff 52%, #6757f5 100%);
+    }
+
+    .lead-form-head strong {
+      display: block;
+      color: #fff;
+      font-size: 23px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .lead-product {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.94);
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 14px;
+      font-weight: 650;
+      backdrop-filter: blur(10px);
+    }
+
+    .lead-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 18px 20px 0;
+    }
+
+    .lead-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .lead-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .lead-field label {
+      color: #283549;
+      font-size: 15px;
+      font-weight: 650;
+    }
+
+    .lead-field input,
+    .lead-field textarea {
+      width: 100%;
+      border: 1px solid #dbe5f2;
+      border-radius: 12px;
+      padding: 12px 13px;
+      color: #172033;
+      background: #fff;
+      font: inherit;
+      outline: none;
+    }
+
+    .lead-field textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .lead-field input:focus,
+    .lead-field textarea:focus {
+      border-color: rgba(12, 127, 242, 0.52);
+      box-shadow: 0 0 0 3px rgba(12, 127, 242, 0.10);
+    }
+
+    .lead-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 20px 20px;
+    }
+
+    .lead-submit {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 20px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--violet));
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(12, 127, 242, 0.18);
+    }
+
+    .lead-submit:disabled {
+      cursor: not-allowed;
+      color: #8b98ac;
+      background: #eef2f7;
+      box-shadow: none;
+    }
+
+    .lead-status {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .disclaimer {
+      margin-top: 14px;
+      color: #8a95a8;
+      font-size: 13px;
+    }
+
+    .diagnostics-card {
+      margin-top: 12px;
+      border: 1px solid rgba(137, 153, 181, 0.22);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.70);
+      overflow: hidden;
+    }
+
+    .diagnostics-card summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 13px;
+      color: #526176;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .diagnostics-card summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .diagnostics-card summary::after {
+      content: "展开";
+      color: #6e7b90;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .diagnostics-card[open] summary::after {
+      content: "收起";
+    }
+
+    .diagnostics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      padding: 0 13px 13px;
+    }
+
+    .diagnostics-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #f7f9fd;
+      color: #657287;
+      font-size: 13px;
+    }
+
+    .diagnostics-item strong {
+      color: #263447;
+      font-weight: 750;
+    }
+
+    .chat-composer {
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      width: min(940px, 100%);
+      transform: translateX(-50%);
+      padding: 12px 0 6px;
+      background: linear-gradient(180deg, rgba(246, 248, 252, 0), rgba(246, 248, 252, 0.95) 28%, rgba(246, 248, 252, 0.95));
+    }
+
+    .chat-composer .composer {
+      margin: 0 auto;
+    }
+
+    .chat-toolbar {
+      width: min(940px, 100%);
+      margin: 0 auto 10px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .end-chat-btn {
+      border: 1px solid rgba(137, 153, 181, 0.28);
+      border-radius: 999px;
+      padding: 9px 14px;
+      color: #5d6c82;
+      background: rgba(255, 255, 255, 0.86);
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(31, 48, 84, 0.08);
+      transition: border-color 0.16s ease, color 0.16s ease, background 0.16s ease;
+    }
+
+    .end-chat-btn:hover {
+      border-color: rgba(240, 68, 56, 0.28);
+      color: #b42318;
+      background: #fff7f6;
+    }
+
+    .end-chat-btn:disabled {
+      cursor: not-allowed;
+      color: #9aa5b5;
+      background: #f2f5f9;
+    }
+
+    .scroll-down {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      bottom: 152px;
+      display: none;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      transform: translateX(-50%);
+      color: #40506a;
+      border: 1px solid rgba(137, 153, 181, 0.24);
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 12px 26px rgba(31, 48, 84, 0.10);
+    }
+
+    .scroll-down.show {
+      display: grid;
+    }
+
+    .empty-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes messageIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .answer-reveal {
+      animation: answerReveal 4s linear both;
+    }
+
+    @keyframes answerReveal {
+      from { clip-path: inset(0 0 100% 0); }
+      to { clip-path: inset(0 0 0 0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .answer-reveal { animation: none; }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.55);
+        opacity: 0.72;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 900px) {
+      body {
+        overflow: auto;
+      }
+
+      .app {
+        padding: 16px;
+        overflow: visible;
+      }
+
+      .topbar {
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .top-actions {
+        align-items: flex-end;
+        flex-direction: column;
+      }
+
+      .home {
+        min-height: calc(100vh - 58px);
+      }
+
+      .home-card {
+        padding-bottom: 2vh;
+      }
+
+      .prompt-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .chat {
+        height: calc(100vh - 58px);
+        margin-top: 10px;
+        padding-bottom: 210px;
+      }
+
+      .chat-composer {
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        bottom: 0;
+        width: auto;
+        transform: none;
+      }
+
+      .bubble-wrap {
+        max-width: calc(100% - 44px);
+      }
+
+      .conversation-context {
+        margin-left: 0;
+        margin-right: 0;
+        font-size: 13px;
+      }
+
+      .conversation-context-line {
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+      }
+
+      .lead-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .scenario-choice-card .chip-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+      }
+
+      .scenario-choice-card .clarify-chip {
+        display: flex;
+        width: 100%;
+        min-height: 52px;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 12px 14px;
+        border-color: rgba(27, 117, 126, 0.20);
+        border-radius: 8px;
+        color: #116a73;
+        background: rgba(251, 254, 254, 0.96);
+        box-shadow: 0 2px 8px rgba(20, 82, 91, 0.06);
+        font-size: 14px;
+        font-weight: 750;
+        line-height: 1.45;
+        text-align: left;
+      }
+
+      .scenario-choice-card .clarify-chip:hover,
+      .scenario-choice-card .clarify-chip:focus-visible {
+        border-color: rgba(27, 117, 126, 0.42);
+        color: #0e6068;
+        background: #f4fbfb;
+      }
+
+      .scenario-choice-card .clarify-chip.selected {
+        border-color: #17808a;
+        color: #fff;
+        background: #17808a;
+        box-shadow: 0 5px 14px rgba(23, 128, 138, 0.18);
+      }
+
+      .topic-products {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        align-items: center;
+      }
+
+      .brand {
+        flex: 0 0 auto;
+        gap: 8px;
+        font-size: 18px;
+        white-space: nowrap;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+      }
+
+      .top-actions {
+        margin-left: auto;
+      }
+
+      .home-card {
+        width: 100%;
+        padding-top: 10px;
+      }
+
+      .ai-badge {
+        width: 200px;
+        height: 268px;
+        margin-bottom: 16px;
+      }
+
+      .headline {
+        padding: 0 4px;
+        font-size: 30px;
+        line-height: 1.2;
+      }
+
+      .subhead {
+        margin: 14px auto 22px;
+        font-size: 15px;
+      }
+
+      .home .composer {
+        width: 100%;
+      }
+
+      .composer {
+        padding: 13px;
+      }
+
+      .device-head {
+        display: block;
+      }
+
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/answer-output.css?v=20260915-3">
+  <link rel="stylesheet" href="/assets/scenario-catalog.css?v=20261009-mobile-v5">
+  <script src="/assets/answer-output.js?v=20261012-public-device-view"></script>
+  <script src="/assets/scenario-catalog.js?v=20260924-native-v3" defer></script>
+</head>
+<body>
+  <main id="app" class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <img class="doctor-photo" src="/assets/demo-lab.svg" alt="">
+        </div>
+        <div>华博士</div>
+      </div>
+    </header>
+
+    <section class="home" aria-label="首页咨询入口">
+      <div class="home-card">
+        <div class="ai-badge" aria-hidden="true">
+          <img class="hero-doctor" src="/assets/demo-lab.svg" alt="">
+        </div>
+        <h1 class="headline">让 <span>华博士</span> 帮你完成科学仪器选型</h1>
+        <p class="subhead">输入应用目标、样本类型、通量、预算或自动化要求。系统会结合产品资料和模型分析，给出选型建议。</p>
+
+        <form class="composer" onsubmit="event.preventDefault(); sendFrom('homeInput');">
+          <textarea id="homeInput" rows="2" placeholder="例如：说明应用目标、样本类型、通量和自动化要求。" oninput="handleInput('homeInput')" onkeydown="handleKeydown(event, 'homeInput')"></textarea>
+          <button id="homeVoice" class="voice-btn" type="button" aria-label="开始语音输入" title="语音输入" onclick="toggleVoiceInput('homeInput')">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3M8 22h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <button id="homeSend" class="send-btn" type="submit" aria-label="发送问题" disabled>
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 19V5m0 0-6 6m6-6 6 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="homeSuggestions" class="suggestions"></div>
+          <div id="homeVoiceStatus" class="voice-status" role="status" aria-live="polite" hidden></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="chat" aria-label="AI 对话区">
+      <div id="conversationContext" class="conversation-context" hidden></div>
+      <div id="chatScroll" class="chat-scroll"></div>
+      <button id="scrollDown" class="scroll-down" onclick="scrollToBottom()" aria-label="滚动到底部">↓</button>
+      <div class="chat-composer">
+        <div class="chat-toolbar">
+          <button id="endChatBtn" class="end-chat-btn" type="button" onclick="endConversation()">结束对话</button>
+        </div>
+        <form class="composer" onsubmit="event.preventDefault(); sendFrom('chatInput');">
+          <textarea id="chatInput" rows="2" placeholder="继续提问…" oninput="handleInput('chatInput')" onkeydown="handleKeydown(event, 'chatInput')"></textarea>
+          <button id="chatVoice" class="voice-btn" type="button" aria-label="开始语音输入" title="语音输入" onclick="toggleVoiceInput('chatInput')">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3M8 22h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <button id="chatSend" class="send-btn" type="submit" aria-label="发送问题" disabled>
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 19V5m0 0-6 6m6-6 6 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="chatSuggestions" class="suggestions"></div>
+          <div id="chatVoiceStatus" class="voice-status" role="status" aria-live="polite" hidden></div>
+        </form>
+        <div class="empty-note">Enter 发送，Shift + Enter 换行</div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="productDialog" class="product-dialog" aria-labelledby="productDialogTitle">
+    <div class="product-dialog-inner">
+      <div class="product-dialog-head">
+        <h2 id="productDialogTitle" class="product-dialog-title">产品介绍</h2>
+        <button class="dialog-close" type="button" aria-label="关闭产品介绍" onclick="closeProductDetail()">&times;</button>
+      </div>
+      <div id="productDialogContent"></div>
+    </div>
+  </dialog>
+
+  <script>
+    const SESSION_KEY = "bio-agent-session-id";
+    const MESSAGES_KEY_PREFIX = "bio-agent-messages:";
+    const appEl = document.getElementById("app");
+    const chatScrollEl = document.getElementById("chatScroll");
+    const conversationContextEl = document.getElementById("conversationContext");
+    const scrollDownEl = document.getElementById("scrollDown");
+    const productDialogEl = document.getElementById("productDialog");
+    const productDialogTitleEl = document.getElementById("productDialogTitle");
+    const productDialogContentEl = document.getElementById("productDialogContent");
+    const messages = [];
+    let sending = false;
+    let suggestTimer = null;
+    let suggestRequestId = 0;
+    let voiceRecorder = null;
+    let voiceStream = null;
+    let voiceChunks = [];
+    let voiceInputId = "";
+    let voiceStopTimer = null;
+    let voiceProcessing = false;
+    let voiceStatusTimer = null;
+    let voiceRecognition = null;
+    let voiceRecognitionBaseText = "";
+    let voiceRecognitionText = "";
+    let voiceAudioContext = null;
+    let voiceAnalyser = null;
+    let voiceSilenceFrame = null;
+    let voiceSpeechDetected = false;
+    let voiceLastSoundAt = 0;
+    let voiceDiscardRecording = false;
+    const VOICE_MAX_DURATION_MS = 45000;
+    const VOICE_NO_SPEECH_TIMEOUT_MS = 8000;
+    const VOICE_SILENCE_MS = 1400;
+    const VOICE_LEVEL_THRESHOLD = 0.018;
+
+    function currentSessionId() {
+      return sessionStorage.getItem(SESSION_KEY) || "";
+    }
+
+    function getSessionId() {
+      let id = currentSessionId();
+      if (!id) {
+        id = "bio-agent-" + Date.now() + "-" + Math.random().toString(16).slice(2);
+        sessionStorage.setItem(SESSION_KEY, id);
+      }
+      return id;
+    }
+
+    function messagesStorageKey(sessionId = currentSessionId()) {
+      return sessionId ? MESSAGES_KEY_PREFIX + sessionId : "";
+    }
+
+    function persistMessages() {
+      const key = messagesStorageKey();
+      if (!key) return;
+      try {
+        sessionStorage.setItem(key, JSON.stringify(messages.slice(-60)));
+      } catch (err) {
+        // Rendering must continue even when browser storage is unavailable.
+      }
+    }
+
+    function restoreLocalMessages() {
+      const key = messagesStorageKey();
+      if (!key) return false;
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(key) || "[]");
+        if (!Array.isArray(saved) || !saved.length) return false;
+        saved.forEach((item) => {
+          if (!item || !["user", "assistant"].includes(item.role)) return;
+          messages.push(item);
+        });
+        return messages.length > 0;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function historyTime(value) {
+      if (!value) return nowTime();
+      const date = new Date(String(value).replace(" ", "T"));
+      return Number.isNaN(date.getTime()) ? nowTime() : date.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function escapeHtml(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function nl2br(text) {
+      return escapeHtml(text).replace(/\n/g, "<br>");
+    }
+
+    function renderAssistantText(text) {
+      const plainText = String(text || "")
+        .replace(/\*\*([^*\n]+)\*\*/g, "$1")
+        .replace(/__([^_\n]+)__/g, "$1")
+        .replace(/`([^`\n]+)`/g, "$1")
+        .replace(/^\s*[*+]\s+/gm, "- ");
+      return nl2br(plainText);
+    }
+
+    function renderScenarioCatalog(catalog) {
+      if (!catalog || !Array.isArray(catalog.groups)) return "";
+      return `<section class="scenario-catalog"><p>所有完整方案按既定顺序展示，点击名称即可查看：</p>${catalog.groups.map((group) => `<div><h3>${escapeHtml(group.title || "方案目录")}</h3><div class="scenario-catalog-list">${(group.items || []).map((item) => `<button class="scenario-catalog-item" type="button" onclick="HuaboshiCatalog.open('${encodeForHandler(item.id)}', '${encodeForHandler(item.title)}')"><strong>${escapeHtml(item.title || "未命名方案")}</strong><span>${escapeHtml(item.summary || "点击查看完整方案")}</span></button>`).join("")}</div></div>`).join("")}</section>`;
+    }
+
+    function encodeForHandler(text) {
+      return encodeURIComponent(String(text || "")).replace(/'/g, "%27");
+    }
+
+    function doctorAvatarSvg() {
+      return `<img class="doctor-photo" src="/assets/demo-lab.svg" alt="">`;
+    }
+
+    function nowTime() {
+      return new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function syncSendState() {
+      document.getElementById("homeSend").disabled = sending || !document.getElementById("homeInput").value.trim();
+      document.getElementById("chatSend").disabled = sending || !document.getElementById("chatInput").value.trim();
+      const endChatBtn = document.getElementById("endChatBtn");
+      if (endChatBtn) endChatBtn.disabled = sending;
+      ["homeVoice", "chatVoice"].forEach((id) => {
+        const button = document.getElementById(id);
+        if (button) button.disabled = voiceProcessing || sending || Boolean(voiceInputId);
+      });
+    }
+
+    function voiceButtonId(inputId) {
+      return inputId === "homeInput" ? "homeVoice" : "chatVoice";
+    }
+
+    function voiceStatusId(inputId) {
+      return inputId === "homeInput" ? "homeVoiceStatus" : "chatVoiceStatus";
+    }
+
+    function showVoiceStatus(inputId, text, timeout = 0) {
+      clearTimeout(voiceStatusTimer);
+      const status = document.getElementById(voiceStatusId(inputId));
+      if (!status) return;
+      status.textContent = text;
+      status.hidden = false;
+      if (timeout) {
+        voiceStatusTimer = setTimeout(() => { status.hidden = true; }, timeout);
+      }
+    }
+
+    function resetVoiceButton(inputId) {
+      const button = document.getElementById(voiceButtonId(inputId));
+      if (!button) return;
+      button.classList.remove("is-recording", "is-processing");
+      button.setAttribute("aria-label", "开始语音输入");
+      button.title = "语音输入";
+    }
+
+    function preferredVoiceMimeType() {
+      const candidates = ["audio/webm;codecs=opus", "audio/mp4", "audio/webm", "audio/ogg;codecs=opus"];
+      return candidates.find((type) => MediaRecorder.isTypeSupported(type)) || "";
+    }
+
+    function stopVoiceTracks() {
+      if (voiceStream) voiceStream.getTracks().forEach((track) => track.stop());
+      voiceStream = null;
+      if (voiceSilenceFrame) cancelAnimationFrame(voiceSilenceFrame);
+      voiceSilenceFrame = null;
+      voiceAnalyser = null;
+      if (voiceAudioContext) voiceAudioContext.close().catch(() => {});
+      voiceAudioContext = null;
+    }
+
+    function stopVoiceInput() {
+      clearTimeout(voiceStopTimer);
+      if (voiceRecorder && voiceRecorder.state === "recording") voiceRecorder.stop();
+    }
+
+    function appendVoiceText(baseText, spokenText) {
+      const base = String(baseText || "").trimEnd();
+      const spoken = String(spokenText || "").trim();
+      if (!spoken) return base;
+      return base ? `${base}\n${spoken}` : spoken;
+    }
+
+    function updateVoiceTextarea(inputId, baseText, spokenText) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      input.value = appendVoiceText(baseText, spokenText);
+      syncSendState();
+    }
+
+    function finishLiveRecognition(inputId, errorMessage = "") {
+      const transcript = voiceRecognitionText.trim();
+      voiceRecognition = null;
+      voiceInputId = "";
+      resetVoiceButton(inputId);
+      syncSendState();
+      if (errorMessage) {
+        showVoiceStatus(inputId, errorMessage, 5200);
+        return;
+      }
+      if (!transcript) {
+        showVoiceStatus(inputId, "没有识别到语音，请重新尝试", 4200);
+        return;
+      }
+      handleInput(inputId);
+      document.getElementById(inputId)?.focus();
+      showVoiceStatus(inputId, "语音输入完成，可修改后发送", 4200);
+    }
+
+    function startLiveRecognition(inputId) {
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!Recognition) return false;
+      const input = document.getElementById(inputId);
+      const recognition = new Recognition();
+      voiceRecognition = recognition;
+      voiceInputId = inputId;
+      voiceRecognitionBaseText = input?.value || "";
+      voiceRecognitionText = "";
+      recognition.lang = "zh-CN";
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+      recognition.onstart = () => {
+        const button = document.getElementById(voiceButtonId(inputId));
+        button.classList.add("is-recording");
+        button.setAttribute("aria-label", "正在语音输入");
+        button.title = "正在识别，停顿后自动结束";
+        showVoiceStatus(inputId, "请开始说话，停顿后自动结束");
+        syncSendState();
+      };
+      recognition.onresult = (event) => {
+        let finalText = "";
+        let interimText = "";
+        for (let index = 0; index < event.results.length; index += 1) {
+          const text = String(event.results[index][0]?.transcript || "");
+          if (event.results[index].isFinal) finalText += text;
+          else interimText += text;
+        }
+        voiceRecognitionText = (finalText + interimText).trim();
+        updateVoiceTextarea(inputId, voiceRecognitionBaseText, voiceRecognitionText);
+      };
+      recognition.onspeechend = () => recognition.stop();
+      recognition.onerror = (event) => {
+        const messages = {
+          "not-allowed": "需要允许麦克风权限才能语音输入",
+          "service-not-allowed": "当前浏览器未开放语音识别权限",
+          "audio-capture": "未检测到可用麦克风",
+          "network": "语音识别网络异常，请重试",
+          "no-speech": "没有识别到语音，请重新尝试",
+        };
+        recognition._huaboshiError = messages[event.error] || "语音识别失败，请重试";
+      };
+      recognition.onend = () => finishLiveRecognition(inputId, recognition._huaboshiError || "");
+      try {
+        hideAllSuggestions();
+        recognition.start();
+        return true;
+      } catch (error) {
+        voiceRecognition = null;
+        voiceInputId = "";
+        return false;
+      }
+    }
+
+    function startSilenceDetection(stream, inputId) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      voiceAudioContext = new AudioContextClass();
+      const source = voiceAudioContext.createMediaStreamSource(stream);
+      voiceAnalyser = voiceAudioContext.createAnalyser();
+      voiceAnalyser.fftSize = 512;
+      source.connect(voiceAnalyser);
+      const levels = new Uint8Array(voiceAnalyser.fftSize);
+      const startedAt = performance.now();
+      const watchLevel = () => {
+        if (!voiceRecorder || voiceRecorder.state !== "recording" || !voiceAnalyser) return;
+        voiceAnalyser.getByteTimeDomainData(levels);
+        let energy = 0;
+        for (const value of levels) {
+          const normalized = (value - 128) / 128;
+          energy += normalized * normalized;
+        }
+        const level = Math.sqrt(energy / levels.length);
+        const now = performance.now();
+        if (level >= VOICE_LEVEL_THRESHOLD) {
+          voiceSpeechDetected = true;
+          voiceLastSoundAt = now;
+        } else if (voiceSpeechDetected && now - voiceLastSoundAt >= VOICE_SILENCE_MS) {
+          showVoiceStatus(inputId, "检测到停顿，正在转成文字…");
+          stopVoiceInput();
+          return;
+        } else if (!voiceSpeechDetected && now - startedAt >= VOICE_NO_SPEECH_TIMEOUT_MS) {
+          voiceDiscardRecording = true;
+          stopVoiceInput();
+          return;
+        }
+        voiceSilenceFrame = requestAnimationFrame(watchLevel);
+      };
+      voiceSilenceFrame = requestAnimationFrame(watchLevel);
+    }
+
+    async function transcribeVoice(blob, inputId) {
+      voiceProcessing = true;
+      const button = document.getElementById(voiceButtonId(inputId));
+      button.classList.remove("is-recording");
+      button.classList.add("is-processing");
+      button.setAttribute("aria-label", "正在识别语音");
+      showVoiceStatus(inputId, "正在转成文字…");
+      syncSendState();
+      try {
+        const response = await fetch("/api/speech/transcribe", {
+          method: "POST",
+          headers: { "Content-Type": blob.type || "audio/webm" },
+          body: blob,
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.detail || "语音识别失败");
+        const input = document.getElementById(inputId);
+        const transcript = String(data.text || "").trim();
+        if (!transcript) throw new Error("未识别到有效语音");
+        const existing = input.value.trim();
+        input.value = existing ? `${existing}\n${transcript}` : transcript;
+        handleInput(inputId);
+        input.focus();
+        showVoiceStatus(inputId, "已转成文字，可修改后发送", 4200);
+      } catch (error) {
+        showVoiceStatus(inputId, error.message || "语音识别失败，请重试", 5200);
+      } finally {
+        voiceProcessing = false;
+        voiceRecorder = null;
+        voiceChunks = [];
+        voiceInputId = "";
+        resetVoiceButton(inputId);
+        syncSendState();
+      }
+    }
+
+    async function toggleVoiceInput(inputId) {
+      if (voiceProcessing || sending) return;
+      if (voiceInputId) return;
+      if (startLiveRecognition(inputId)) return;
+      if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+        showVoiceStatus(inputId, "当前浏览器不支持录音，请在系统浏览器中打开", 5200);
+        return;
+      }
+      try {
+        hideAllSuggestions();
+        voiceStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mimeType = preferredVoiceMimeType();
+        voiceRecorder = new MediaRecorder(voiceStream, mimeType ? { mimeType } : undefined);
+        voiceChunks = [];
+        voiceInputId = inputId;
+        voiceSpeechDetected = false;
+        voiceLastSoundAt = 0;
+        voiceDiscardRecording = false;
+        voiceRecorder.addEventListener("dataavailable", (event) => {
+          if (event.data && event.data.size) voiceChunks.push(event.data);
+        });
+        voiceRecorder.addEventListener("stop", () => {
+          clearTimeout(voiceStopTimer);
+          const type = voiceRecorder.mimeType || mimeType || "audio/webm";
+          const blob = new Blob(voiceChunks, { type });
+          stopVoiceTracks();
+          if (voiceDiscardRecording) {
+            resetVoiceButton(inputId);
+            voiceRecorder = null;
+            voiceChunks = [];
+            voiceInputId = "";
+            syncSendState();
+            showVoiceStatus(inputId, "没有检测到语音，请重新尝试", 4200);
+            return;
+          }
+          if (blob.size < 200) {
+            resetVoiceButton(inputId);
+            voiceRecorder = null;
+            voiceChunks = [];
+            voiceInputId = "";
+            syncSendState();
+            showVoiceStatus(inputId, "录音时间太短，请重新录制", 4200);
+            return;
+          }
+          transcribeVoice(blob, inputId);
+        }, { once: true });
+        voiceRecorder.start(250);
+        const button = document.getElementById(voiceButtonId(inputId));
+        button.classList.add("is-recording");
+        button.setAttribute("aria-label", "正在语音输入");
+        button.title = "正在录音，停顿后自动结束";
+        showVoiceStatus(inputId, "请开始说话，停顿后自动结束");
+        syncSendState();
+        startSilenceDetection(voiceStream, inputId);
+        voiceStopTimer = setTimeout(() => {
+          showVoiceStatus(inputId, "已达45秒，正在识别…");
+          stopVoiceInput();
+        }, VOICE_MAX_DURATION_MS);
+      } catch (error) {
+        stopVoiceTracks();
+        resetVoiceButton(inputId);
+        const denied = error?.name === "NotAllowedError" || error?.name === "SecurityError";
+        showVoiceStatus(inputId, denied ? "需要允许麦克风权限才能语音输入" : "无法启动录音，请重试", 5200);
+      }
+    }
+
+    function handleInput(inputId) {
+      syncSendState();
+      scheduleSuggest(inputId);
+    }
+
+    function suggestionBoxId(inputId) {
+      return inputId === "homeInput" ? "homeSuggestions" : "chatSuggestions";
+    }
+
+    function hideSuggestions(inputId) {
+      suggestRequestId += 1;
+      const box = document.getElementById(suggestionBoxId(inputId));
+      box.classList.remove("show");
+      box.innerHTML = "";
+    }
+
+    function hideAllSuggestions() {
+      clearTimeout(suggestTimer);
+      suggestRequestId += 1;
+      ["homeSuggestions", "chatSuggestions"].forEach((id) => {
+        const box = document.getElementById(id);
+        if (!box) return;
+        box.classList.remove("show");
+        box.innerHTML = "";
+      });
+    }
+
+    function scheduleSuggest(inputId) {
+      clearTimeout(suggestTimer);
+      suggestRequestId += 1;
+      const requestId = suggestRequestId;
+      const query = document.getElementById(inputId).value.trim();
+      if (query.length < 2 || sending) {
+        hideSuggestions(inputId);
+        return;
+      }
+
+      suggestTimer = setTimeout(() => loadSuggestions(inputId, query, requestId), 220);
+    }
+
+    async function loadSuggestions(inputId, query, requestId) {
+      try {
+        const res = await fetch(`/api/suggest?query=${encodeURIComponent(query)}&limit=5`);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const input = document.getElementById(inputId);
+        if (requestId !== suggestRequestId || sending || !input || input.value.trim() !== query) return;
+        renderSuggestions(inputId, data.items || []);
+      } catch (err) {
+        if (requestId === suggestRequestId) hideSuggestions(inputId);
+      }
+    }
+
+    function renderSuggestions(inputId, items) {
+      const box = document.getElementById(suggestionBoxId(inputId));
+      if (!items.length) {
+        hideSuggestions(inputId);
+        return;
+      }
+
+      box.innerHTML = items.map((item) => {
+        return `
+          <button class="suggestion-item" type="button" onclick="chooseSuggestion('${inputId}', '${encodeForHandler(item.name)}')">
+            <span class="suggestion-title">${escapeHtml(item.name)}</span>
+          </button>
+        `;
+      }).join("");
+      box.classList.add("show");
+    }
+
+    function chooseSuggestion(inputId, encodedName) {
+      const name = decodeURIComponent(encodedName);
+      document.getElementById(inputId).value = `介绍一下${name}`;
+      hideSuggestions(inputId);
+      syncSendState();
+      sendFrom(inputId);
+    }
+
+    function handleKeydown(event, inputId) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        hideAllSuggestions();
+        return;
+      }
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendFrom(inputId);
+      }
+    }
+
+    function askPreset(encodedText) {
+      const text = decodeURIComponent(encodedText);
+      document.getElementById("homeInput").value = text;
+      syncSendState();
+      sendText(text);
+    }
+
+    function sendEncodedText(encodedText) {
+      sendText(decodeURIComponent(encodedText));
+    }
+
+    function sendAction(encodedText, encodedAction = "", encodedValue = "") {
+      sendText(
+        decodeURIComponent(encodedText || ""),
+        decodeURIComponent(encodedAction || ""),
+        decodeURIComponent(encodedValue || "")
+      );
+    }
+
+    function sendFrom(inputId) {
+      const input = document.getElementById(inputId);
+      const text = input.value.trim();
+      if (!text || sending) return;
+      input.value = "";
+      hideSuggestions(inputId);
+      syncSendState();
+      sendText(text);
+    }
+
+    async function endConversation() {
+      if (sending) return;
+
+      const sessionId = sessionStorage.getItem(SESSION_KEY);
+      if (sessionId) {
+        try {
+          await fetch(`/api/session/${encodeURIComponent(sessionId)}`, { method: "DELETE" });
+        } catch (err) {
+          // Ending the local session should still work even if the cleanup call fails.
+        }
+      }
+
+      const oldSessionId = sessionId;
+      sessionStorage.removeItem(SESSION_KEY);
+      if (oldSessionId) sessionStorage.removeItem(MESSAGES_KEY_PREFIX + oldSessionId);
+      messages.length = 0;
+      document.getElementById("homeInput").value = "";
+      document.getElementById("chatInput").value = "";
+      hideSuggestions("homeInput");
+      hideSuggestions("chatInput");
+      appEl.classList.remove("chat-mode");
+      updateConversationContext(null);
+      renderMessages();
+      syncSendState();
+      document.getElementById("homeInput").focus();
+    }
+
+    function pushUserMessage(text) {
+      messages.push({
+        role: "user",
+        text,
+        time: nowTime()
+      });
+      persistMessages();
+    }
+
+    function pushLoadingMessage() {
+      const id = "loading-" + Date.now();
+      messages.push({
+        id,
+        role: "assistant",
+        loading: true,
+        time: nowTime()
+      });
+      persistMessages();
+      return id;
+    }
+
+    function replaceMessage(id, payload) {
+      const index = messages.findIndex((item) => item.id === id);
+      if (index >= 0) {
+        messages[index] = {
+          id,
+          role: "assistant",
+          time: nowTime(),
+          data: payload
+        };
+        updateConversationContext(payload.conversation_context);
+        persistMessages();
+      }
+    }
+
+    function renderConversationContext(context) {
+      if (!context || context.active !== true) return "";
+      const objectName = context.object_name || context.scenario || context.topic || context.stage || "";
+      if (!objectName) return "";
+      const trail = [];
+      if (context.topic && context.topic !== objectName) trail.push(context.topic);
+      if (context.scenario && context.scenario !== objectName) trail.push(context.scenario);
+      if (context.stage && context.stage !== objectName) trail.push(context.stage);
+      const confirmed = (context.confirmed || [])
+        .filter((item) => item && item.label && item.value)
+        .slice(0, 4)
+        .map((item) => `${escapeHtml(item.label)}：${escapeHtml(item.value)}`)
+        .join("　·　");
+      return `
+        <div class="conversation-context-line">
+          <span class="conversation-context-label">当前讨论</span>
+          <strong class="conversation-context-object">${escapeHtml(objectName)}</strong>
+          ${context.object_label ? `<span class="conversation-context-type">（${escapeHtml(context.object_label)}）</span>` : ""}
+        </div>
+      `;
+    }
+
+    function updateConversationContext(context) {
+      if (!conversationContextEl) return;
+      if (!context || context.active !== true || !renderConversationContext(context)) {
+        conversationContextEl.hidden = true;
+        conversationContextEl.innerHTML = "";
+        return;
+      }
+      conversationContextEl.hidden = false;
+      conversationContextEl.innerHTML = renderConversationContext(context);
+    }
+
+    function renderNextActions(actions) {
+      if (!Array.isArray(actions)) return "";
+      const valid = actions.filter((item) => item && item.label && item.message).slice(0, 3);
+      if (!valid.length) return "";
+      return `
+        <section class="next-actions">
+          <h3 class="next-actions-title">下一步</h3>
+          <div class="next-actions-list">
+            ${valid.map((item) => `<button class="next-action" type="button" title="${escapeHtml(item.message)}" onclick="sendAction('${encodeForHandler(item.message)}', '${encodeForHandler(item.action || "")}', '${encodeForHandler(item.action_value || "")}')">${escapeHtml(item.label)}</button>`).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    async function sendText(text, action = "", actionValue = "") {
+      if (sending) return;
+      sending = true;
+      appEl.classList.add("chat-mode");
+      pushUserMessage(text);
+      const loadingId = pushLoadingMessage();
+      renderMessages();
+      syncSendState();
+
+      try {
+        const requestBody = {
+          message: text,
+          session_id: getSessionId()
+        };
+        if (action) requestBody.action = action;
+        if (actionValue) requestBody.action_value = actionValue;
+        if (/(方案目录|场景方案目录|平台方案目录|有哪些方案|方案有哪些)/.test(text)) {
+          const catalogResponse = await fetch("/api/scenario-catalog");
+          if (!catalogResponse.ok) throw new Error("方案目录暂时无法加载");
+          replaceMessage(loadingId, { answer: "当前可查看的方案目录如下。", scenario_catalog: await catalogResponse.json() });
+          return;
+        }
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody)
+        });
+
+        if (!res.ok) {
+          throw new Error("HTTP " + res.status);
+        }
+
+        const data = await res.json();
+        replaceMessage(loadingId, data);
+      } catch (err) {
+        replaceMessage(loadingId, {
+          answer: "服务暂时没有响应，请稍后重试。",
+          recommended_devices: [],
+          need_more_info: [],
+          related_questions: [],
+          disclaimer: ""
+        });
+      } finally {
+        sending = false;
+        syncSendState();
+        renderMessages({ revealAnswer: true });
+        if (!window.matchMedia("(pointer: coarse)").matches) {
+          document.getElementById("chatInput").focus({ preventScroll: true });
+        }
+      }
+    }
+
+    function renderMessages({ revealAnswer = false } = {}) {
+      chatScrollEl.innerHTML = messages.map((message) => {
+        if (message.role === "user") {
+          return `
+            <article class="message user">
+              <div class="bubble-wrap">
+                <div class="meta" style="justify-content:flex-end;">${escapeHtml(message.time)}</div>
+                <div class="bubble">${nl2br(message.text)}</div>
+              </div>
+            </article>
+          `;
+        }
+
+        return `
+          <article class="message assistant">
+            <div class="avatar">${doctorAvatarSvg()}</div>
+            <div class="bubble-wrap">
+              <div class="meta"><strong>华博士</strong><span>${escapeHtml(message.time || "")}</span></div>
+              ${message.loading ? renderLoading() : renderAssistant(message.data || {}, message.id)}
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      const latestAssistant = [...messages].reverse().find((item) => item.role === "assistant" && !item.loading && item.data);
+      updateConversationContext(latestAssistant ? latestAssistant.data.conversation_context : null);
+
+      const finalMessage = messages[messages.length - 1];
+      if (revealAnswer && finalMessage?.role === "assistant" && !finalMessage.loading) {
+        const answer = chatScrollEl.lastElementChild?.querySelector(".hb-answer");
+        if (answer && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          answer.classList.add("answer-reveal");
+          answer.addEventListener("animationend", (event) => {
+            if (event.target === answer) answer.classList.remove("answer-reveal");
+          });
+        }
+      }
+
+      window.requestAnimationFrame(() => {
+        const lastMessage = messages[messages.length - 1];
+        const lastElement = chatScrollEl.lastElementChild;
+        if (lastMessage?.role === "assistant" && !lastMessage.loading && lastElement) {
+          // Entrance transforms would offset the scroll target before the animation ends.
+          lastElement.style.animation = "none";
+          const top = lastElement.getBoundingClientRect().top - chatScrollEl.getBoundingClientRect().top;
+          chatScrollEl.scrollTop += top;
+          const distance = chatScrollEl.scrollHeight - chatScrollEl.scrollTop - chatScrollEl.clientHeight;
+          scrollDownEl.classList.toggle("show", distance > 240);
+        } else {
+          scrollToBottom();
+        }
+      });
+    }
+
+    function messagesFromHistory(items) {
+      if (!Array.isArray(items)) return [];
+      return items
+        .filter((item) => item && ["user", "assistant"].includes(item.role))
+        .map((item, index) => {
+          if (item.role === "user") {
+            return {
+              id: `history-user-${index}`,
+              role: "user",
+              text: item.content || "",
+              time: historyTime(item.created_at),
+            };
+          }
+          const payload = item.payload && typeof item.payload === "object"
+            ? item.payload
+            : { answer: item.content || "" };
+          if (!payload.answer) payload.answer = item.content || "";
+          return {
+            id: `history-assistant-${index}`,
+            role: "assistant",
+            time: historyTime(item.created_at),
+            data: payload,
+          };
+        });
+    }
+
+    async function restoreConversation() {
+      const sessionId = currentSessionId();
+      if (!sessionId) return;
+
+      const localRestored = restoreLocalMessages();
+      if (localRestored) {
+        appEl.classList.add("chat-mode");
+        renderMessages();
+      }
+
+      try {
+        const res = await fetch(`/api/session/${encodeURIComponent(sessionId)}/history`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const serverMessages = messagesFromHistory(data.messages);
+        const localReadyCount = messages.filter((item) => !item.loading).length;
+        if (serverMessages.length && serverMessages.length >= localReadyCount) {
+          messages.length = 0;
+          messages.push(...serverMessages);
+          persistMessages();
+        }
+        if (messages.length) {
+          appEl.classList.add("chat-mode");
+          renderMessages();
+        }
+      } catch (err) {
+        // The local transcript is enough for a graceful offline refresh.
+      }
+    }
+
+    function renderLoading() {
+      return `
+        <div class="thinking-pill"><span class="thinking-dot"></span>正在分析</div>
+        <div class="bubble">正在理解问题并整理回答...</div>
+      `;
+    }
+
+    function renderAssistant(data, messageId) {
+      const answer = data.answer || "没有生成回答。";
+      const isCompletePlan = data.intent === "scenario_plan" && data.scenario_plan;
+      return `
+        <section class="hb-answer">
+        ${HuaboshiOutput.actions(data)}
+        <div class="hb-export-content">
+        <div class="bubble">${renderAssistantText(answer)}</div>
+        ${renderScenarioCatalog(data.scenario_catalog)}
+        ${renderResearchPath(data.research_path)}
+        ${renderScenarioPlan(data.scenario_plan)}
+        ${renderDeviceCards(data.recommended_devices || [], Boolean(data.research_path))}
+        </div>
+        ${HuaboshiOutput.mindmap(data)}
+        ${renderLeadForm(data.lead_form, messageId)}
+        ${isCompletePlan ? "" : renderClarifyingQuestions(data.clarifying_questions || [], messageId, data.clarifying_title)}
+        ${isCompletePlan || (data.clarifying_questions || []).length ? "" : renderInfoCard("还需要补充的信息", data.need_more_info || [], false)}
+        ${isCompletePlan ? "" : renderNextActions(data.next_actions || [])}
+        ${HuaboshiOutput.actions(data)}
+        </section>
+      `;
+    }
+
+    function renderResearchPath(path) {
+      if (!path || !Array.isArray(path.stages) || !path.stages.length) return "";
+      const stages = path.stages.map((stage, index) => `
+        <div class="research-stage">
+          <span class="research-stage-no">${escapeHtml(String(stage.step_no || index + 1))}</span>
+          <div>
+            <strong>${escapeHtml(stage.name || "研究环节")}</strong>
+            ${stage.goal ? `<p>${escapeHtml(stage.goal)}</p>` : ""}
+            <button class="stage-open" type="button" onclick="sendAction('${encodeForHandler(`查看${stage.name || "该环节"}`)}', 'select_stage', '${encodeForHandler(stage.name || "")}')">进入此环节</button>
+          </div>
+        </div>
+      `).join("");
+      return `
+        <section class="research-path">
+          <h3>${escapeHtml(path.title || "研究路径")}</h3>
+          ${path.scenario_title ? `<p class="research-path-meta">关联方案：${escapeHtml(path.scenario_title)}</p>` : ""}
+          <div class="research-stage-list">${stages}</div>
+        </section>
+      `;
+    }
+
+    function joinScopeNotes(notes) {
+      return (notes || []).map(note => {
+        const text = note.trim().replace(/[;；,，:：]+$/u, "").trimEnd();
+        if (!text) return "";
+        return /[。.!?！？…][”’"')）\]】]*$/u.test(text) ? text : text + "。";
+      }).join("");
+    }
+
+    function publicDeviceName(item) {
+      let name = String(item?.name || "").trim();
+      const model = String(item?.model || "").trim();
+      if (!name || !model || ["-", "——"].includes(model) || !name.includes(model)) return name;
+      const start = name.indexOf(model);
+      const end = start + model.length;
+      if (start > 0 && end < name.length && "（(".includes(name[start - 1]) && "）)".includes(name[end])) {
+        name = name.slice(0, start - 1) + name.slice(end + 1);
+      } else {
+        name = name.replace(model, "");
+      }
+      return name.replace(/\s+/gu, " ").replace(/[ ；;,，]+$/gu, "").trim();
+    }
+
+    function publicScenarioText(plan, value) {
+      let text = String(value || "");
+      const replacements = (plan?.equipment_table || []).map((item) => {
+        const raw = String(item?.name || "");
+        return [raw, publicDeviceName(item)];
+      }).filter(([raw, visible]) => raw && raw !== visible).sort((a, b) => b[0].length - a[0].length);
+      replacements.forEach(([raw, visible]) => { text = text.split(raw).join(visible); });
+      return text;
+    }
+
+    function renderScenarioPlan(plan) {
+      if (!plan || !Array.isArray(plan.steps) || !plan.steps.length) return "";
+      const meta = [["适用范围", plan.applications], ["适用样本", plan.sample_scope]]
+        .filter(([, value]) => value)
+        .map(([label, value]) => `<p class="scenario-meta"><strong>${label}：</strong>${escapeHtml(value.replace(/\s+\/\s+/gu, "、"))}</p>`)
+        .join("");
+      const steps = plan.steps.map((step) => {
+        const relations = Object.entries(step.relations || {}).map(([label, items]) => {
+          if (!Array.isArray(items) || !items.length) return "";
+          return `<div class="scenario-relation"><strong>${escapeHtml(label)}：</strong>${items.map(item => escapeHtml(publicScenarioText(plan, item))).join("；")}</div>`;
+        }).join("");
+        return `
+          <section class="scenario-step">
+            <h4>${escapeHtml(String(step.step_no || ""))}. ${escapeHtml(step.name || "未命名步骤")}</h4>
+            ${step.goal ? `<p><strong>目标：</strong>${escapeHtml(publicScenarioText(plan, step.goal))}</p>` : ""}
+            ${step.samples ? `<p><strong>适用样本：</strong>${escapeHtml(publicScenarioText(plan, step.samples))}</p>` : ""}
+            ${step.role ? `<p><strong>执行角色：</strong>${escapeHtml(publicScenarioText(plan, step.role))}</p>` : ""}
+            ${step.capabilities ? `<p><strong>执行内容：</strong>${escapeHtml(publicScenarioText(plan, step.capabilities))}</p>` : ""}
+            <div class="scenario-relations">${relations}</div>
+            ${step.handoff ? `<p><strong>衔接：</strong>${escapeHtml(publicScenarioText(plan, step.handoff))}</p>` : ""}
+            ${step.quality_gate ? `<p><strong>质量检查：</strong>${escapeHtml(publicScenarioText(plan, step.quality_gate))}</p>` : ""}
+            ${step.boundary ? `<p><strong>适用边界：</strong>${escapeHtml(publicScenarioText(plan, step.boundary))}</p>` : ""}
+            ${step.output ? `<p><strong>输出结果：</strong>${escapeHtml(publicScenarioText(plan, step.output))}</p>` : ""}
+            ${step.name ? `<button class="stage-open" type="button" onclick="sendAction('${encodeForHandler(`查看${step.name}环节设备`)}', 'select_stage', '${encodeForHandler(step.name)}')">查看本环节设备</button>` : ""}
+          </section>
+        `;
+      }).join("");
+      return `
+        <section class="scenario-plan">
+          <h3 class="scenario-title">${escapeHtml(plan.title || "场景实施方案")}</h3>
+          ${meta}
+          ${plan.introduction ? `<p>${escapeHtml(publicScenarioText(plan, plan.introduction))}</p>` : ""}
+          ${(plan.scope_notes || []).length ? `<p><strong>实施条件：</strong>${escapeHtml(publicScenarioText(plan, joinScopeNotes(plan.scope_notes)))}</p>` : ""}
+          <div class="scenario-steps">${steps}</div>
+          ${plan.configuration ? `<p><strong>配置安排：</strong>${escapeHtml(publicScenarioText(plan, plan.configuration))}</p>` : ""}
+          ${(plan.acceptance || []).map(item => `<p><strong>验收要点：</strong>${escapeHtml(publicScenarioText(plan, item))}</p>`).join("")}
+          ${(plan.external_capabilities || []).map(item => `<p style="color:#b91c1c"><strong>外部能力待确认：${escapeHtml(item.name || "")}</strong><br>${escapeHtml(item.position || "")}；${escapeHtml(item.role || "")}。${escapeHtml(item.boundary || "")}</p>`).join("")}
+          ${plan.external_capabilities ? (plan.references || []).filter(ref => /^https:\/\//i.test(ref.url || "")).map(ref => `<p><strong>方法依据：</strong>${escapeHtml(ref.supports || "")} <a href="${escapeHtml(ref.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(ref.title || "来源")}</a></p>`).join("") : ""}
+          ${renderEquipmentTable(plan, plan.equipment_table || [])}
+        </section>
+      `;
+    }
+
+    function renderEquipmentTable(plan, rows) {
+      if (!Array.isArray(rows) || !rows.length) return "";
+      const cells = rows.map((item) => `
+        <tr>
+          <td data-label="设备名称"><button class="product-link" type="button" onclick="openProductDetail('${encodeForHandler(publicDeviceName(item))}', '${encodeForHandler(publicScenarioText(plan, item.description || item.applications || ""))}')">${escapeHtml(publicDeviceName(item) || "未命名设备")}</button></td>
+          <td data-label="用途及功能">${escapeHtml(publicScenarioText(plan, item.applications || "-"))}</td>
+        </tr>
+      `).join("");
+      return `
+        <section class="equipment-table-section">
+          <h3 class="equipment-table-title">方案设备明细</h3>
+          <div class="equipment-table-wrap">
+            <table class="equipment-table">
+              <thead><tr><th>设备名称</th><th>用途及功能</th></tr></thead>
+              <tbody>${cells}</tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderDeviceCards(devices, isTopicOverview = false) {
+      if (!devices.length) return "";
+      const cards = `<div class="result-cards${isTopicOverview ? " topic-products" : ""}">${devices.map((item, index) => renderDeviceCard(item, index, isTopicOverview)).join("")}</div>`;
+      if (!isTopicOverview) {
+        return devices.length > 1
+          ? `<section class="recommendation-section"><h3 class="recommendation-title">相关产品（${devices.length}）</h3>${cards}</section>`
+          : cards;
+      }
+      return `<section class="topic-product-section"><h3 class="topic-product-title">相关产品</h3>${cards}</section>`;
+    }
+
+    function renderFollowupQuestions(questions) {
+      const valid = questions.filter((item) => typeof item === "string" && item.trim()).slice(0, 4);
+      if (!valid.length) return "";
+      return `
+        <section class="followup-section">
+          <h3 class="followup-title">继续了解</h3>
+          <div class="followup-list">
+            ${valid.map((item) => `<button class="followup-question" type="button" onclick="sendEncodedText('${encodeForHandler(item)}')">${escapeHtml(item)}</button>`).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderDeviceCard(item, index = 0, isTopicOverview = false) {
+      const sections = [
+        ["产品简介", item.overview],
+        ["产品优势", item.advantages],
+        ["品牌/厂家", item.brand_vendor || "-"],
+        ["型号", item.product_code || "-"],
+        ["供货单位", item.supplier_name || "-"],
+        ["技术参数", Array.isArray(item.key_specs) ? item.key_specs.join("\n") || "-" : item.key_specs || "-"],
+        ["配置需求（非标配承诺）", item.product_configuration || "-"],
+        ["应用场景", item.applications],
+        ["适用样本", Array.isArray(item.sample_types) ? item.sample_types.join("；") : ""]
+      ].filter((section) => section[1]);
+
+      const fallbackDescription = !sections.length && item.description
+        ? `<div class="section-box"><div class="section-title">详细介绍</div><div class="section-text">${nl2br(item.description)}</div></div>`
+        : "";
+      const fallback = item.description || item.overview || item.applications || "";
+      const rankLabel = isTopicOverview ? "相关产品" : (index === 0 ? "主推荐" : `备选 ${index}`);
+      const stageLabel = item.scenario_step || item.workflow_role || "";
+
+      return `
+        <section class="device-card">
+          <div class="device-head">
+            <h3 class="device-title">${escapeHtml(item.name || "未命名设备")}</h3>
+          </div>
+          <div class="device-context-line">
+            <span class="device-rank">${escapeHtml(rankLabel)}</span>
+            ${stageLabel ? `<span class="device-stage">· ${escapeHtml(stageLabel)}</span>` : ""}
+          </div>
+          ${item.reasons && item.reasons.length ? `<ol class="reason-list">${item.reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ol>` : ""}
+          ${sections.map(([title, text]) => renderSection(title, text)).join("")}
+          ${fallbackDescription}
+          ${renderSelectionNotes(item.selection_notes || [])}
+          <div class="device-card-actions">
+            <button class="product-action secondary" type="button" onclick="openProductDetail('${encodeForHandler(item.name || "")}', '${encodeForHandler(fallback)}')">查看详情</button>
+            <button class="product-action" type="button" onclick="sendAction('${encodeForHandler("围绕这款继续了解")}', 'select_product', '${encodeForHandler(item.name || "")}')">围绕这款继续</button>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderSelectionNotes(notes) {
+      if (!notes.length) return "";
+      return `<ul class="note-list">${notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul>`;
+    }
+
+    function renderSection(title, text) {
+      return `
+        <div class="section-box">
+          <div class="section-title">${escapeHtml(title)}</div>
+          <div class="section-text">${nl2br(text)}</div>
+        </div>
+      `;
+    }
+
+    async function openProductDetail(encodedName, encodedFallbackDescription = "") {
+      const name = decodeURIComponent(encodedName || "");
+      const fallbackDescription = decodeURIComponent(encodedFallbackDescription || "");
+      if (!name) return;
+      productDialogTitleEl.textContent = name;
+      productDialogContentEl.innerHTML = '<div class="product-detail-section"><p>正在加载产品介绍...</p></div>';
+      if (!productDialogEl.open) productDialogEl.showModal();
+      try {
+        const res = await fetch(
+          "/api/products/detail?name=" + encodeURIComponent(name)
+          + "&fallback_description=" + encodeURIComponent(fallbackDescription)
+        );
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.detail || "未找到该产品的介绍资料");
+        renderProductDetail(data);
+      } catch (err) {
+        productDialogContentEl.innerHTML = `<div class="product-detail-section"><p>${escapeHtml(String(err.message || err))}</p></div>`;
+      }
+    }
+
+    function renderProductDetail(data) {
+      productDialogTitleEl.textContent = data.name || "产品介绍";
+      const sections = [
+        ["型号", data.product_code],
+        ["品牌/厂家", data.brand_vendor],
+        ["供货单位", data.supplier_name],
+        ["来源品牌", data.brand_name],
+        ["产品简介", data.overview],
+        ["产品优势", data.advantages],
+        ["应用场景", data.applications],
+        ["技术参数", Array.isArray(data.key_specs) ? data.key_specs.join("\n") : ""],
+        ["配置需求（非标配承诺）", data.product_configuration],
+        ["适用样本", Array.isArray(data.sample_types) ? data.sample_types.join("；") : ""],
+      ];
+      const brochureLink = data.brochure_url
+        ? `<section class="product-detail-section"><h4>产品资料页</h4><p><a class="product-link" href="${escapeHtml(data.brochure_url)}" target="_blank" rel="noopener">查看产品资料页</a></p></section>`
+        : "";
+      productDialogContentEl.innerHTML = sections.length
+        ? sections.map(([title, value]) => `<section class="product-detail-section"><h4>${escapeHtml(title)}</h4><p>${nl2br(value == null || value === "" ? "-" : value)}</p></section>`).join("")
+        : '<div class="product-detail-section"><p>该产品暂未收录详细介绍。</p></div>';
+      productDialogContentEl.innerHTML += brochureLink;
+    }
+
+    function closeProductDetail() {
+      if (productDialogEl.open) productDialogEl.close();
+    }
+
+    productDialogEl.addEventListener("click", (event) => {
+      if (event.target === productDialogEl) closeProductDetail();
+    });
+
+    function leadFormId(messageId) {
+      return "lead-" + String(messageId || "current").replace(/[^a-zA-Z0-9_-]/g, "-");
+    }
+
+    function defaultLeadFields(hasProduct) {
+      const fields = [
+        { name: "name", label: "姓名", type: "text", required: true, placeholder: "请输入您的姓名" },
+        { name: "phone", label: "手机号/微信", type: "text", required: true, placeholder: "便于工作人员联系报价" },
+        { name: "organization", label: "单位/机构", type: "text", required: false, placeholder: "例如：医院、科研院所、企业" },
+        { name: "requirement", label: "需求备注", type: "textarea", required: false, placeholder: "可填写样本类型、通量、采购时间或配置要求" },
+      ];
+      return hasProduct ? fields : [
+        { name: "product_name", label: "咨询产品", type: "text", required: true, placeholder: "请输入想了解报价的产品名称" },
+        ...fields,
+      ];
+    }
+
+    function renderLeadField(field) {
+      const name = field.name || "";
+      if (!name) return "";
+      const type = field.type === "textarea" ? "textarea" : "text";
+      const required = field.required ? "required" : "";
+      const full = type === "textarea" || name === "product_name" ? " full" : "";
+      const placeholder = escapeHtml(field.placeholder || "");
+      const label = `${escapeHtml(field.label || name)}${field.required ? " *" : ""}`;
+      const control = type === "textarea"
+        ? `<textarea data-field-name="${escapeHtml(name)}" name="${escapeHtml(name)}" ${required} placeholder="${placeholder}"></textarea>`
+        : `<input data-field-name="${escapeHtml(name)}" name="${escapeHtml(name)}" ${required} placeholder="${placeholder}" />`;
+      return `
+        <div class="lead-field${full}">
+          <label>${label}</label>
+          ${control}
+        </div>
+      `;
+    }
+
+    function renderLeadForm(form, messageId) {
+      if (!form) return "";
+      const formId = leadFormId(messageId);
+      const productName = form.product_name || "";
+      const fields = Array.isArray(form.fields) && form.fields.length
+        ? form.fields
+        : defaultLeadFields(Boolean(productName));
+
+      return `
+        <form class="lead-form-card" id="${formId}" data-product="${escapeHtml(productName)}" data-success="${escapeHtml(form.success_message || "已收到您的报价需求，工作人员会第一时间联系您。")}" onsubmit="event.preventDefault(); submitLeadForm('${encodeForHandler(formId)}')">
+          <div class="lead-form-head">
+            <div>
+              <strong>${escapeHtml(form.title || "获取产品报价方案")}</strong>
+              ${productName ? `<div class="lead-product">咨询产品：${escapeHtml(productName)}</div>` : ""}
+            </div>
+          </div>
+          <div class="lead-grid">
+            ${fields.map(renderLeadField).join("")}
+          </div>
+          <div class="lead-actions">
+            <span class="lead-status"></span>
+            <button class="lead-submit" type="submit">${escapeHtml(form.submit_label || "提交报价需求")}</button>
+          </div>
+        </form>
+      `;
+    }
+
+    async function submitLeadForm(encodedFormId) {
+      const form = document.getElementById(decodeURIComponent(encodedFormId));
+      if (!form) return;
+
+      const status = form.querySelector(".lead-status");
+      const button = form.querySelector(".lead-submit");
+      const payload = {
+        product_name: form.dataset.product || "",
+        source: "chat",
+      };
+
+      form.querySelectorAll("[data-field-name]").forEach((field) => {
+        payload[field.dataset.fieldName] = field.value.trim();
+      });
+
+      if (!payload.name || !payload.phone || !payload.product_name) {
+        if (status) status.innerText = "请填写产品、姓名和联系方式。";
+        return;
+      }
+
+      if (button) button.disabled = true;
+      if (status) status.innerText = "正在提交...";
+
+      try {
+        const res = await fetch("/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.detail || "提交失败");
+
+        if (status) status.innerText = data.message || form.dataset.success;
+        form.querySelectorAll("input, textarea, button").forEach((item) => {
+          item.disabled = true;
+        });
+      } catch (err) {
+        if (status) status.innerText = String(err.message || err);
+        if (button) button.disabled = false;
+      }
+    }
+
+    function clarifyCardId(messageId) {
+      return "clarify-" + String(messageId || "current").replace(/[^a-zA-Z0-9_-]/g, "-");
+    }
+
+    function renderClarifyingQuestions(questions, messageId, title = "") {
+      const validQuestions = questions.filter((item) => item && item.question && Array.isArray(item.options) && item.options.length);
+      if (!validQuestions.length) return "";
+      const cardId = clarifyCardId(messageId);
+      const isScenarioChoice = validQuestions.some((item) => item.question === "请选择需要查看的完整方案");
+      const actions = isScenarioChoice ? "" : `
+        <div class="clarify-actions">
+          <span class="clarify-count">选择 1 项即可，已选 0 项</span>
+          <button class="clarify-submit" type="button" disabled onclick="submitClarifying('${encodeForHandler(cardId)}')">按此继续</button>
+        </div>
+      `;
+
+      return `
+        <div class="info-card clarify-card${isScenarioChoice ? " scenario-choice-card" : ""}" id="${cardId}">
+          <strong>${escapeHtml(title || "补充一项关键信息")}</strong>
+          ${validQuestions.map((item) => `
+            <div class="clarify-group" data-mode="single">
+              <div class="clarify-question">${escapeHtml(item.question)}</div>
+              <div class="chip-row">
+                ${item.options.map((option) => `
+                  <button class="question-chip clarify-chip" type="button" data-question-id="${escapeHtml(item.id || '')}" data-question="${escapeHtml(item.question)}" data-option="${escapeHtml(option)}" aria-pressed="false" onclick="toggleClarifyingOption(this)">
+                    ${escapeHtml(option)}
+                  </button>
+                `).join("")}
+              </div>
+            </div>
+          `).join("")}
+          ${actions}
+        </div>
+      `;
+    }
+
+    function updateClarifyingState(card) {
+      const selected = Array.from(card.querySelectorAll(".clarify-chip.selected"));
+      const count = card.querySelector(".clarify-count");
+      const submit = card.querySelector(".clarify-submit");
+      if (count) count.innerText = `选择 1 项即可，已选 ${selected.length} 项`;
+      if (submit) submit.disabled = !selected.length || sending;
+    }
+
+    function toggleClarifyingOption(button) {
+      if (sending) return;
+      const card = button.closest(".clarify-card");
+      if (card?.classList.contains("scenario-choice-card")) {
+        const option = button.dataset.option || "";
+        if (!option) return;
+        button.classList.add("selected");
+        button.setAttribute("aria-pressed", "true");
+        button.setAttribute("aria-busy", "true");
+        sendText(option, "scenario_choice", option);
+        return;
+      }
+      const group = button.closest(".clarify-group");
+      if (group && !button.classList.contains("selected")) {
+        group.querySelectorAll(".clarify-chip.selected").forEach((item) => {
+          item.classList.remove("selected");
+          item.setAttribute("aria-pressed", "false");
+        });
+      }
+      button.classList.toggle("selected");
+      button.setAttribute("aria-pressed", button.classList.contains("selected") ? "true" : "false");
+      if (card) updateClarifyingState(card);
+    }
+
+    function submitClarifying(encodedCardId) {
+      if (sending) return;
+      const card = document.getElementById(decodeURIComponent(encodedCardId));
+      if (!card) return;
+
+      const selected = Array.from(card.querySelectorAll(".clarify-chip.selected"));
+      if (!selected.length) {
+        updateClarifyingState(card);
+        return;
+      }
+
+      const grouped = new Map();
+      if (selected.length === 1 && ['product_direction', 'scenario_direction'].includes(selected[0].dataset.questionId)) {
+        const option = selected[0].dataset.option;
+        sendText(option, 'scenario_choice', option);
+        return;
+      }
+      selected.forEach((button) => {
+        const question = button.dataset.question || "";
+        const option = button.dataset.option || "";
+        if (!question || !option) return;
+        const values = grouped.get(question) || [];
+        values.push(option);
+        grouped.set(question, values);
+      });
+
+      const summary = Array.from(grouped.entries())
+        .map(([question, options]) => `${question} ${options.join("、")}`)
+        .join("；");
+
+      if (!summary) return;
+      sendText(`补充信息：${summary}`);
+    }
+
+    function renderInfoCard(title, items, clickable) {
+      if (!items.length) return "";
+      return `
+        <div class="info-card">
+          <strong>${escapeHtml(title)}</strong>
+          <div class="chip-row">
+            ${items.map((item) => clickable
+              ? `<button class="question-chip" type="button" onclick="sendEncodedText('${encodeForHandler(item)}')">${escapeHtml(item)}</button>`
+              : `<span class="question-chip">${escapeHtml(item)}</span>`
+            ).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    async function copyText(encodedText) {
+      const text = decodeURIComponent(encodedText);
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (err) {
+        const temp = document.createElement("textarea");
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+      }
+    }
+
+    function scrollToBottom() {
+      chatScrollEl.scrollTop = chatScrollEl.scrollHeight;
+      scrollDownEl.classList.remove("show");
+    }
+
+    chatScrollEl.addEventListener("scroll", () => {
+      const distance = chatScrollEl.scrollHeight - chatScrollEl.scrollTop - chatScrollEl.clientHeight;
+      scrollDownEl.classList.toggle("show", distance > 240);
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+      if (!event.target.closest(".composer")) hideAllSuggestions();
+    });
+
+    restoreConversation();
+    syncSendState();
+  </script>
+</body>
+</html>
