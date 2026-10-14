@@ -4,6 +4,12 @@
 
 An experimental scientific-instrument agent with workflow-aware retrieval, evidence-backed recommendations, and reviewed knowledge releases.
 
+## 工程导航与迭代逻辑
+
+[迭代复盘](docs/EVOLUTION.md) · [工程模块](docs/MODULES.md) · [设计取舍与实验计划](docs/ENGINEERING.md) · [个人 AI 工程作品集](https://github.com/2137183172-cyber)
+
+项目演进按“问题 → 设计选择 → 验证与边界”记录。早期修改来自原项目记录，公开仓库保留真实的首次公开日期。
+
 ## 为什么做这个项目
 
 一句“我要做这个实验”，往往还不足以选出合适的设备。样本类型、处理步骤、通量和自动化要求，都可能改变答案。华博士尝试把这些约束逐步问清楚，再把实验步骤、设备角色和资料依据连接起来。
@@ -71,3 +77,5 @@ MIT License。依赖与第三方资料遵循各自许可。
 配套项目：[lab-repair-agent](https://github.com/2137183172-cyber/lab-repair-agent)。两个项目分别探索仪器选型与维修协作。
 
 [验证记录](docs/VALIDATION.md) · [参与讨论](https://github.com/2137183172-cyber/huaboshi-instrument-agent/discussions)
+
+[公开 Projects 看板：主项目、模块与下一步实验](https://github.com/users/2137183172-cyber/projects/1)
